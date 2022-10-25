@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="utf-8">
+    <title>Desafio básico</title>
+    <base href="/">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <style>
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: .25rem;
+            margin-top: 1rem;
+        }
+
+        .card {
+            border: solid black;
+            background-color: white;
+            padding: .5rem;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<div class="container" layout:fragment="content">
+    <template card-template>
+        <div card class="card">
+            <img src="" alt="" event-img>
+            <h2 event-name></h2>
+        </div>
+    </template>
+
+    <div card-container class="card-container">
+        <div card th:each="event, iter : ${events}" class="card">
+            <img th:src="${event.imageUrl}" event-img>
+            <h2 event-name></h2>
+        </div>
+    </div>
+
+</div>
+</html>

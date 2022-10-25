@@ -1,0 +1,36 @@
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+input {
+  font-size: 1rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: .25rem;
+  margin-top: 1rem;
+}
+
+.card {
+  border: 1px solid black;
+  background-color: white;
+  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  background-color: rgb(94, 226, 133);
+}
+
+.hide {
+  display: none;
+}
+
+.table-row:hover {
+  background-color: rgb(240, 80, 80);
+}

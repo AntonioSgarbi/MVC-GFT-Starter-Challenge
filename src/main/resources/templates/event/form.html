@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout.html}">
+
+<head>
+	<meta charset="UTF-8">
+    <script th:src="@{index.js}"></script>
+    <link rel="stylesheet" th:href="@{style.css}">
+</head>
+<div layout:fragment="content">
+	<div class="alert alert-primary" th:if="${message != null}" th:text="${message}">
+	</div>
+	<div>
+		<div>
+			<h1 class="h3 text-center" th:if="${event.getId()}">Editar Evento</h1>
+			<h1 class="h3 text-center" th:unless="${event.getId()}">Novo Evento</h1>
+		</div>
+		<div>
+			<form method="POST" th:object="${event}" th:action="@{/event/edit}" class="form-inline">
+				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 p-3">
+
+					<div class="p-2 col-12 col-md-6 col-lg-4">
+						<div class="card text-white bg-secondary">
+							<div class="card-header">
+								<h1 class="h4 text-center">Informações gerais</h1>
+							</div>
+							<div class="card-body">
+								<input type="hidden" th:field="*{id}">
+
+								<div class="form-group mb-3">
+									<label for="name">Nome:</label>
+									<input class="form-control" type="text" th:field="*{name}" required>
+									<div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+									</div>
+								</div>
+
+								<div class="form-group mb-3">
+									<label for="start">Data Entrega:</label>
+									<input class="form-control" th:field="*{start}" type="date">
+									<div class="text-danger" th:if="${#fields.hasErrors('start')}" th:errors="*{start}">
+									</div>
+								</div>
+
+								<div class="form-group mb-3">
+									<label for="end">Data Entrega:</label>
+									<input class="form-control" th:field="*{end}" type="date">
+									<div class="text-danger" th:if="${#fields.hasErrors('end')}" th:errors="*{end}">
+									</div>
+								</div>
+
+								<div class="form-group mb-3">
+									<label for="imageUrl">Caminho da Imagem:</label>
+									<input class="form-control" type="text" th:field="*{imageUrl}" required>
+									<div class="text-danger" th:if="${#fields.hasErrors('imageUrl')}"
+										th:errors="*{imageUrl}">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="p-2 col-12 col-md-6 col-lg-4">
+						<div class="card text-white bg-secondary">
+							<div class="card-header">
+								<h2 class="h4 text-center">Atividades</h2>
+							</div>
+							<div class="card-body px-3" activity-container>
+								<div th:each="activity, iterActivity: *{activities}" class="card p-1 mb-3">
+									<input type="hidden" th:field="*{activities[__${iterActivity.index}__].id}"
+										required>
+
+									<div class="form-group mb-3">
+										<label for="name">Nome:</label>
+										<input class="form-control" type="text"
+											th:field="*{activities[__${iterActivity.index}__].name}" required>
+										<div class="text-danger" th:if="${#fields.hasErrors('name')}"
+											th:errors="*{name}">
+										</div>
+									</div>
+
+									<div class="form-group mb-3">
+										<label for="start">Data Início:</label>
+										<input class="form-control"
+											th:field="*{activities[__${iterActivity.index}__].start}" type="date">
+										<div class="text-danger" th:if="${#fields.hasErrors('start')}"
+											th:errors="*{start}">
+										</div>
+									</div>
+
+									<div class="form-group mb-3">
+										<label for="end">Data Entrega:</label>
+										<input class="form-control"
+											th:field="*{activities[__${iterActivity.index}__].end}" type="date">
+										<div class="text-danger" th:if="${#fields.hasErrors('end')}" th:errors="*{end}">
+										</div>
+									</div>
+									<div class="d-flex justify-content-end mb-3">
+										<button class="btn btn-danger"
+											onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode)">Remover</button>
+									</div>
+								</div>
+							</div>
+							<div class="d-flex justify-content-center mb-3">
+								<button class="btn btn-primary" onclick="addActivity()">Adicionar</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="p-2 col-12 col-lg-4">
+						<div class="card text-white bg-secondary">
+							<div class="card-header">
+								<h2 class="h4 text-center">Grupos</h2>
+							</div>
+							<div class="card-body px-3" group-container>
+
+								<div th:each="group, iterGroup: *{groups}" class="card p-1 pb-3 mb-3"
+									th:id="'groups[' + ${iterGroup.index} + ']'">
+									<div class="card-header">
+										<div class="d-flex justify-content-between">
+											<input type="hidden" th:field="*{groups[__${iterGroup.index}__].id}">
+											<div class="form-group">
+												<label for="name" class="h5 text-dark">Nome:</label>
+												<input class="form-control" type="text"
+													th:field="*{groups[__${iterGroup.index}__].name}" required>
+												<div class="text-danger" th:if="${#fields.hasErrors('name')}"
+													th:errors="*{name}">
+												</div>
+											</div>
+											<button class="btn btn-outline-danger align-self-center" onclick="this.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode)">[X]</button>
+										</div>
+									</div>
+
+									<div>
+										<div class="search-wrapper">
+											<label for="search" class="text-dark">Buscar participantes para
+												adicionar:</label>
+											<input type="search" id="search" class="w-100" input-search>
+										</div>
+										<div class="search-result" search-container></div>
+									</div>
+
+									<div class="wrapper-table">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>Letras</th>
+													<th>Nome</th>
+												</tr>
+											</thead>
+											<tbody table-body-container>
+												<tr th:each="participant, iterPart : ${group.members}" class="table-row"
+													onclick="this.parentNode.removeChild(this)">
+													<td th:text="${participant.letters}" table-row-letters></td>
+													<td th:text="${participant.name}" table-row-name></td>
+													<td class="hidden" style="display:none">
+														<input type="hidden" input-table-row
+															th:field="*{groups[__${iterGroup.index}__].members[__${iterPart.index}__]}">
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="d-flex justify-content-center mb-3">
+								<button class="btn btn-primary" onclick="addGroup()">Adicionar</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="d-flex justify-content-center py-3">
+					<button type="submit" class="btn btn-primary">Salvar Evento</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<template activity-template>
+		<div activity>
+			<input type="hidden" required>
+
+			<div class="form-group mb-3" activity-name>
+				<label for="name">Nome:</label>
+				<input class="form-control" type="text" required>
+			</div>
+
+			<div class="form-group mb-3" activity-start>
+				<label for="start">Data Início:</label>
+				<input class="form-control" type="date">
+			</div>
+
+			<div class="form-group mb-3" activity-end>
+				<label for="end">Data Entrega:</label>
+				<input class="form-control" type="date">
+			</div>
+			<div class="d-flex justify-content-end mb-3">
+				<button class="btn btn-danger"
+					onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode)">Remover</button>
+			</div>
+
+		</div>
+	</template>
+
+	<template search-template>
+		<div class="card-search-result text-dark" onclick="addParticipantOnGroupMembers(this)">
+			<p style="display: none" card-id></p>
+			<img src="" alt="" card-img>
+			<p card-letters></p>
+			<p card-name></p>
+		</div>
+	</template>
+
+	<template group-template>
+		<div class="card p-1 pb-3 mb-3" id="groups[x]">
+			<div class="card-header">
+				<div class="d-flex justify-content-between">
+					<div class="form-group">
+						<label for="name" class="h5 text-dark">Nome:</label>
+						<input class="form-control" type="text" input-group-name required name="groups[x].name">
+					</div>
+					<button class="btn btn-outline-danger align-self-center" onclick="this.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode)">[X]</button>
+				</div>
+			</div>
+
+			<div>
+				<div class="search-wrapper">
+					<label for="search" class="text-dark">Buscar participantes para
+						adicionar:</label>
+					<input type="search" id="search" class="w-100" input-search>
+				</div>
+				<div class="search-result" search-container></div>
+			</div>
+
+			<div class="wrapper-table">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Letras</th>
+							<th>Nome</th>
+						</tr>
+					</thead>
+					<tbody table-body-container>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</template>
+
+	<template members-row-template>
+		<tr class="table-row" table-row onclick="this.parentNode.removeChild(this)">
+			<td table-row-letters></td>
+			<td table-row-name></td>
+			<td style="display: none;" table-row-input>
+				<input type="hidden" input-table-row>
+			</td>
+		</tr>
+	</template>
+
+</div>
+
+</html>
