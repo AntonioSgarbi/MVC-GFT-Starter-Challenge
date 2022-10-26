@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <script th:src="@{index.js}"></script>
+    <link rel="stylesheet" th:href="@{style.css}"> -->
+</head>
+<div layout:fragment="content">
+    <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
+    <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+
+    <form method="POST" th:object="${activity}" th:action="@{/activity/presence-list?eventId=} + ${eventId}" class="form-inline">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{start}">
+        <input type="hidden" th:field="*{end}">
+
+        <div class="d-flex justify-content-center">
+            <table class="table table-striped w-75">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Entregou</th>
+                        <th>Atrasou</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-row" th:each="participant, iterParticipant : ${participants}">
+                        <input type="hidden" th:field="*{delivered[__${iterParticipant.index}__].id}">
+                        <td th:text="${participant.name}"></td>
+                        <td>
+                            <div class="form-group form-check form-switch">
+                                <input type="checkbox" class="form-check-input" th:value="${participant.id}"
+                                    th:field="*{delivered[__${iterParticipant.index}__].participant}">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group form-check form-switch">
+                                <input type="checkbox" class="form-check-input" th:value="${participant.id}"
+                                    th:field="*{delivered[__${iterParticipant.index}__].late}">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-primary w-25" type="submit">Salvar</button>
+        </div>
+    </form>
+</div>
+
+</html>

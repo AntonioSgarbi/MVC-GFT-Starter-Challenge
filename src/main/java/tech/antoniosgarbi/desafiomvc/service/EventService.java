@@ -1,18 +1,13 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
 import org.springframework.stereotype.Service;
-
 import tech.antoniosgarbi.desafiomvc.model.Activity;
 import tech.antoniosgarbi.desafiomvc.model.Event;
 import tech.antoniosgarbi.desafiomvc.model.Group;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.repository.EventRepository;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EventService {
@@ -64,17 +59,31 @@ public class EventService {
     }
 
     private void checkActivities(Event event) {
-        List<Activity> activities = event.getActivities();
-        activities.stream().forEach(activity -> {
-            if(activity.getEnd().compareTo(event.getEnd()) > 0) {
-                throw new RuntimeException("Não é possível cadastrar Atividade com entrega marcada para após o fim do evento");
-            } 
-            activity = this.activityService.save(activity);
+        System.out.println(event);
+        List<Activity> verifiedActivities = new LinkedList<>();
+        event.getActivities().stream().forEach(activity -> {
+            if(activity != null && activity.getName() != null && activity.getStart() != null && activity.getEnd() != null) {
+                if(activity.getEnd().compareTo(event.getEnd()) > 0) {
+                    throw new RuntimeException("Não é possível cadastrar Atividade com entrega marcada para após o fim do evento");
+                }
+                verifiedActivities.add(this.activityService.save(activity));
+            }
         });
+        event.setActivities(verifiedActivities);
     }
 
     public List<Event> findAll() {
         return this.eventRepository.findAll();
+    }
+
+    public List<Participant> findAllParticipants(Activity activity) {
+        List<Participant> participants = new LinkedList<>();
+        Event event = this.eventRepository.findByActivitiesContains(activity)
+            .orElseThrow(() -> new RuntimeException("Atividade já foi excluída deste evento"));
+
+        event.getGroups().forEach(group -> participants.addAll(group.getMembers()));
+
+        return participants;
     }
 
     public Event findById(Long id) {

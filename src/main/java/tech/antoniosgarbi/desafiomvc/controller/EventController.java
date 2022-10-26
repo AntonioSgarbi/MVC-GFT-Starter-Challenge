@@ -4,15 +4,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import tech.antoniosgarbi.desafiomvc.model.Activity;
 import tech.antoniosgarbi.desafiomvc.model.Event;
-import tech.antoniosgarbi.desafiomvc.model.Group;
-import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.service.EventService;
-
-import javax.validation.Valid;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/event")
@@ -24,7 +17,7 @@ public class EventController {
     }
 
     @GetMapping("/edit")
-    public ModelAndView edit(@RequestParam(required = false) Long id) {
+    public ModelAndView edit(@RequestParam(required = false) Long id, @RequestParam(required = false) boolean isFromActivity) {
         ModelAndView mv = new ModelAndView("event/form.html");
         Event event;
 
@@ -38,6 +31,11 @@ public class EventController {
                 mv.addObject("message", e.getMessage());
             }
         }
+        
+        if(isFromActivity) {
+            mv.addObject("message", "Lista de presença atualizada");
+        }
+        
         mv.addObject("event", event);
         return mv;
     }
@@ -52,6 +50,7 @@ public class EventController {
             mv.addObject("message", "error");
             return mv;
         }
+
         try {
             event = eventService.save(event);
 
@@ -64,10 +63,9 @@ public class EventController {
         } catch(Exception e) {
             mv.addObject("message", e.getMessage());
         }
-        mv.addObject("evnet", event);
-        
+        mv.addObject("event", event);
+
         return mv;
-        
     }
 
     @GetMapping
@@ -77,7 +75,6 @@ public class EventController {
         mv.addObject("list", eventService.findAll());
 
         return mv;
-
     }
 
     @GetMapping("/delete/{id}")

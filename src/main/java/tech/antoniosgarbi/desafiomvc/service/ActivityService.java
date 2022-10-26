@@ -9,9 +9,11 @@ import java.util.List;
 @Service
 public class ActivityService {
     private final ActivityRepository activityRepository;
+    private final DeliveryService deliveryService;
 
-    public ActivityService(ActivityRepository activityRepository) {
+    public ActivityService(ActivityRepository activityRepository, DeliveryService deliveryService) {
         this.activityRepository = activityRepository;
+        this.deliveryService = deliveryService;
     }
 
     public Activity findById(Long id) {
@@ -19,6 +21,11 @@ public class ActivityService {
     }
 
     public Activity save(Activity activity) {
+        if(activity.getDelivered() != null) {
+            activity.getDelivered().forEach(d -> {
+                if(d != null) this.deliveryService.save(d);
+            });
+        }
         return this.activityRepository.save(activity);
     }
 

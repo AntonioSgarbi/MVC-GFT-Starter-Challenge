@@ -43,7 +43,8 @@ function renderCreatedGroup(createdGroup) {
 }
 
 function addGroup() {  
-  const newGroup = cloneGroupTemplate(); 
+  const newGroup = cloneGroupTemplate();
+  groupContainer = document.querySelector('[group-container]');
   
   const idFromLastGroup = groupContainer.children[groupContainer.children.length - 1].id;
 
@@ -98,6 +99,8 @@ function addParticipantOnGroupMembers(cardElement) {
   inputElement.value = id;
 
   const parentGroup = cardElement.parentNode.parentNode.parentNode;
+
+  
 
   const tbodyFromGroup = cardElement.parentNode.parentNode.parentNode
     .querySelector(".wrapper-table")
@@ -159,9 +162,12 @@ function searchByName(container, name) {
 }
 
 window.onload = function () {
-  groupContainer = document.querySelector("[group-container]");
+  
+  const searchsPreLoaded = document.querySelectorAll('[input-search]');
+  console.log(searchsPreLoaded);
 
-  const searchInput = document.querySelector("[input-search]");
-  addListenerOnInputSearch(searchInput);
+  for(let i =0; i < searchsPreLoaded.length; i++) {
+    addListenerOnInputSearch(searchsPreLoaded[i]);
+  }
 };
 
