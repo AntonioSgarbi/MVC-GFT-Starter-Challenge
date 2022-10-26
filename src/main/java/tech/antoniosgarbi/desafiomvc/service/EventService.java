@@ -22,9 +22,15 @@ public class EventService {
     }
 
     public Event save(Event event) {
-        checkDuplicate(event);
-        checkActivities(event);
-        checkGroups(event);
+        this.checkDuplicate(event);
+
+        List<Activity> verifiedActivities =
+                this.activityService.checkAtivityDeadlineAndPersistTransient(event.getActivities(), event.getEnd());
+        event.setActivities(verifiedActivities);
+
+        List<Group> verifiedGroups = this.groupService.checkGroups(event.getGroups());
+        event.setGroups(verifiedGroups);
+
         return this.eventRepository.save(event);
     }
 
@@ -37,41 +43,6 @@ public class EventService {
         return event;
     }
 
-    private void checkGroups(Event event) {
-        Map<Long, Participant> participants = new HashMap<>();
-        
-        List<Group> verifiedGroups = new LinkedList<>();
-        
-        for(Group group : event.getGroups()) { 
-            if(group != null && group.getMembers() != null) {
-                for(Participant participant : group.getMembers()) {
-                    if(participant != null) {
-                        if(participants.containsKey(participant.getId()))
-                            throw new RuntimeException("Uma pessoa não pode participar de dois grupos em um mesmo evento!");
-                        else
-                            participants.put(participant.getId(), participant);
-                    }
-                }
-                verifiedGroups.add(groupService.save(group));
-            }
-        }
-        event.setGroups(verifiedGroups);
-    }
-
-    private void checkActivities(Event event) {
-        System.out.println(event);
-        List<Activity> verifiedActivities = new LinkedList<>();
-        event.getActivities().stream().forEach(activity -> {
-            if(activity != null && activity.getName() != null && activity.getStart() != null && activity.getEnd() != null) {
-                if(activity.getEnd().compareTo(event.getEnd()) > 0) {
-                    throw new RuntimeException("Não é possível cadastrar Atividade com entrega marcada para após o fim do evento");
-                }
-                verifiedActivities.add(this.activityService.save(activity));
-            }
-        });
-        event.setActivities(verifiedActivities);
-    }
-
     public List<Event> findAll() {
         return this.eventRepository.findAll();
     }
@@ -79,7 +50,7 @@ public class EventService {
     public List<Participant> findAllParticipants(Activity activity) {
         List<Participant> participants = new LinkedList<>();
         Event event = this.eventRepository.findByActivitiesContains(activity)
-            .orElseThrow(() -> new RuntimeException("Atividade já foi excluída deste evento"));
+                .orElseThrow(() -> new RuntimeException("Atividade já foi excluída deste evento"));
 
         event.getGroups().forEach(group -> participants.addAll(group.getMembers()));
 
@@ -96,8 +67,8 @@ public class EventService {
 
     private void checkDuplicate(Event event) {
         Optional<Event> optional = this.eventRepository.findByName(event.getName());
-        if(event.getId() == null && optional.isPresent()) {
-            throw new RuntimeException("Event is alread registered!");
+        if (event.getId() == null && optional.isPresent()) {
+            throw new RuntimeException("Já existe um evento com esse nome registrado!");
         }
     }
 }
