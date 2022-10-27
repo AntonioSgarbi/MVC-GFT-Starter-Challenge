@@ -17,6 +17,7 @@ public class Delivery {
 
     @ManyToOne
     private Participant participant;
-
+    
+    private Boolean wasDelivered;
     private Boolean late;
 }

@@ -23,23 +23,15 @@
                     <tr>
                         <th>Nome</th>
                         <th>Entregou</th>
-                        <th>Atrasou</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="table-row" th:each="participant, iterParticipant : ${participants}">
-                        <input type="hidden" th:field="*{delivered[__${iterParticipant.index}__].id}">
+                    <tr class="table-row" th:each="participant : ${participants}">                        
                         <td th:text="${participant.name}"></td>
                         <td>
                             <div class="form-group form-check form-switch">
                                 <input type="checkbox" class="form-check-input" th:value="${participant.id}"
-                                    th:field="*{delivered[__${iterParticipant.index}__].participant}">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group form-check form-switch">
-                                <input type="checkbox" class="form-check-input" th:value="${participant.id}"
-                                    th:field="*{delivered[__${iterParticipant.index}__].late}">
+                                    th:field="*{delivered}">
                             </div>
                         </td>
                     </tr>

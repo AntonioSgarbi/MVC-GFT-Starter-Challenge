@@ -33,8 +33,12 @@ public class DatabaseFillerComponent {
         return Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-    private Delivery deliverFromParticipant(Participant participant, boolean late) {
-        return new Delivery(null, participant, late);
+//     private Delivery deliverFromParticipant(Participant participant, boolean late) {
+//         return new Delivery(null, participant, true, late);
+//     }
+
+    private Participant deliverFromParticipant(Participant participant, boolean late) {
+        return participant;
     }
 
     private void initDatabase() {
@@ -87,50 +91,22 @@ public class DatabaseFillerComponent {
         participants.forEach(p -> p = this.participantRepository.save(p));
 
         {
-            Event e1 = new Event(null, "Reunião Agil", dateFrom(10, 10, 2022), dateFrom(11, 12, 2022), "", null, null);
+            Event e1 = new Event(null, "Reunião Agil", dateFrom(10, 10, 2022), dateFrom(11, 12, 2022), "", null, null, null);
 
             Activity a1 = new Activity(null, "agil init", dateFrom(11, 10, 2022), dateFrom(17, 10, 2022), null);
             Activity a2 = new Activity(null, "agil mid", dateFrom(18, 10, 2022), dateFrom(25, 10, 2022), null);
             Activity a3 = new Activity(null, "agil end", dateFrom(26, 10, 2022), dateFrom(9, 11, 2022), null);
 
             {
-                List<Delivery> deliveriesA1 = Arrays.asList(
-                        deliverFromParticipant(p1, false),
-                        deliverFromParticipant(p2, true),
-                        deliverFromParticipant(p3, false),
-                        deliverFromParticipant(p4, false),
-                        deliverFromParticipant(p5, false),
-                        deliverFromParticipant(p6, false),
-                        deliverFromParticipant(p7, true),
-                        deliverFromParticipant(p8, true),
-                        deliverFromParticipant(p9, false));
-
-                deliveriesA1.forEach(d -> d = this.deliveryRepository.save(d));
+                List<Participant> deliveriesA1 = Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9);
                 a1.setDelivered(deliveriesA1);
             }
             {
-                List<Delivery> deliveriesA2 = Arrays.asList(
-                        deliverFromParticipant(p1, false),
-                        deliverFromParticipant(p3, false),
-                        deliverFromParticipant(p5, true),
-                        deliverFromParticipant(p6, false),
-                        deliverFromParticipant(p7, true),
-                        deliverFromParticipant(p9, false));
-                deliveriesA2.forEach(d -> d = this.deliveryRepository.save(d));
+                List<Participant> deliveriesA2 = Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9);
                 a2.setDelivered(deliveriesA2);
             }
             {
-                List<Delivery> deliveriesA3 = Arrays.asList(
-                        deliverFromParticipant(p1, false),
-                        deliverFromParticipant(p2, false),
-                        deliverFromParticipant(p3, false),
-                        deliverFromParticipant(p4, false),
-                        deliverFromParticipant(p5, false),
-                        deliverFromParticipant(p6, false),
-                        deliverFromParticipant(p7, false),
-                        deliverFromParticipant(p9, false));
-
-                deliveriesA3.forEach(d -> d = this.deliveryRepository.save(d));
+                List<Participant> deliveriesA3 = Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9);
                 a3.setDelivered(deliveriesA3);
             }
             e1.setActivities(Arrays.asList(a1, a2, a3));

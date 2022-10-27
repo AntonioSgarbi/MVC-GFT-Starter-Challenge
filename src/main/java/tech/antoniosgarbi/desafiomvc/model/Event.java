@@ -27,5 +27,7 @@ public class Event {
     private List<Activity> activities;
     @OneToMany
     private List<Group> groups;
+    @OneToMany
+    private List<PresenceList> presence;
 
 }

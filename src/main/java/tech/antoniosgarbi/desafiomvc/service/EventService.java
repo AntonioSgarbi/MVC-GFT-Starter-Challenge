@@ -7,6 +7,7 @@ import tech.antoniosgarbi.desafiomvc.model.Group;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.repository.EventRepository;
 
+import javax.persistence.PreRemove;
 import java.util.*;
 
 @Service
@@ -47,7 +48,7 @@ public class EventService {
         return this.eventRepository.findAll();
     }
 
-    public List<Participant> findAllParticipants(Activity activity) {
+    public List<Participant> findAllParticipantsFromEvent(Activity activity) {
         List<Participant> participants = new LinkedList<>();
         Event event = this.eventRepository.findByActivitiesContains(activity)
                 .orElseThrow(() -> new RuntimeException("Atividade já foi excluída deste evento"));

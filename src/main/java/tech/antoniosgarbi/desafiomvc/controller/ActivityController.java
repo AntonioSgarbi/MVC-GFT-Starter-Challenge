@@ -1,9 +1,14 @@
 package tech.antoniosgarbi.desafiomvc.controller;
 
+import java.util.List;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import tech.antoniosgarbi.desafiomvc.model.Activity;
+import tech.antoniosgarbi.desafiomvc.model.Delivery;
+import tech.antoniosgarbi.desafiomvc.model.Event;
+import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.service.ActivityService;
 import tech.antoniosgarbi.desafiomvc.service.EventService;
 
@@ -19,15 +24,20 @@ public class ActivityController {
     }
 
     @GetMapping("/presence-list")
-    public ModelAndView getPresenceList(@RequestParam Long id, @RequestParam Long eventId) {
-        ModelAndView mv = new ModelAndView("/activity/presence.html");
+    public ModelAndView getPresenceList(@RequestParam Long id, @RequestParam Long eventId, @RequestParam(required = false) boolean newGroupFormation) {
+        ModelAndView mv = new ModelAndView("/activity/activity_delivered.html");
+
+        if(newGroupFormation) {
+            
+        }
         
         Activity activity = this.activityService.findById(id);
-        
+        List<Participant> participants = this.eventService.findAllParticipantsFromEvent(activity);
+
         mv.addObject("activity", activity);
         mv.addObject("eventId", eventId);
 
-        mv.addObject("participants", this.eventService.findAllParticipants(activity));
+        mv.addObject("participants", this.eventService.findAllParticipantsFromEvent(activity));
         
 
         return mv;

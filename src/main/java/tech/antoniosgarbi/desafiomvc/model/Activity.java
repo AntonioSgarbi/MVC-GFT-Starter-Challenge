@@ -22,7 +22,7 @@ public class Activity {
     private Date start;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date end;
-    @OneToMany
-    private List<Delivery> delivered;
+    @ManyToMany
+    private List<Participant> delivered;
 
 }

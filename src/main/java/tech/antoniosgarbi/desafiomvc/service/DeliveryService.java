@@ -13,7 +13,7 @@ public class DeliveryService {
     }
 
     public Delivery save(Delivery delivery) {
-        if(delivery.getParticipant() == null) {
+        if(!delivery.getWasDelivered()) {
             delivery.setLate(false);
         }
         return this.deliveryRepository.save(delivery);

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuário</title>
+    <script th:src="@{index.js}"></script>
+    <link rel="stylesheet" th:href="@{style.css}">
+</head>
+<div layout:fragment="content">
+    <div class="mx-5">
+        <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
+        <div>
+            <h1 class="text-center h3">Cadastro de Usuário</h1>
+            <form method="POST" th:object="${user}" th:action="@{/user/edit}">
+                <input type="hidden" th:field="*{id}">
+    
+                <div class="form-group mb-3">
+                    <label for="name">Usuário com 4 letras:</label>
+                    <input class="form-control" type="text" th:field="*{username}" required></input>
+                    <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="name">E-mail:</label>
+                    <input class="form-control" type="text" th:field="*{email}" required></input>
+                    <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Usuário</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</html>
