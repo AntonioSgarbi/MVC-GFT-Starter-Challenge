@@ -1,14 +1,11 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
+import org.springframework.stereotype.Service;
+import tech.antoniosgarbi.desafiomvc.model.AttendanceList;
+import tech.antoniosgarbi.desafiomvc.repository.AttendanceRepository;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import tech.antoniosgarbi.desafiomvc.model.AttendanceList;
-import tech.antoniosgarbi.desafiomvc.model.Participant;
-import tech.antoniosgarbi.desafiomvc.repository.AttendanceRepository;
 
 @Service
 public class AttendanceListService {

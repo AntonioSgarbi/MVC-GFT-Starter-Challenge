@@ -1,20 +1,13 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
-import org.springframework.stereotype.Service;
-
 import lombok.Getter;
-import tech.antoniosgarbi.desafiomvc.model.Activity;
-import tech.antoniosgarbi.desafiomvc.model.AttendanceList;
-import tech.antoniosgarbi.desafiomvc.model.Event;
-import tech.antoniosgarbi.desafiomvc.model.Group;
-import tech.antoniosgarbi.desafiomvc.model.Participant;
+import org.springframework.stereotype.Service;
+import tech.antoniosgarbi.desafiomvc.model.*;
 import tech.antoniosgarbi.desafiomvc.repository.EventRepository;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -51,14 +44,12 @@ public class EventService {
         if (event.getPresences() == null) {
             event.setPresences(new ArrayList<>());
         }
-
         this.checkAttendanceList(event);
 
         return this.eventRepository.save(event);
     }
 
     private void checkAttendanceList(Event event) {
-
         long diff = event.getEnd().getTime() - event.getStart().getTime();
 
         int totalDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
@@ -88,31 +79,35 @@ public class EventService {
         else {
             Event atual = findById(event.getId());
 
-            if (this.datesHasChange(atual, event)) {
+            if (!this.datesHasChange(atual, event)) {
+                event.setPresences(atual.getPresences());
+            } else {
                 List<AttendanceList> atualIncluded = new LinkedList<>();
                 List<Date> atualIncludedDate = new LinkedList<>();
 
-                for (AttendanceList attendanceList : event.getPresences()) {
-                    if (datesInRange.contains(attendanceList.getDate())) {
-                        atualIncluded.add(attendanceList);
-                        atualIncludedDate.add(attendanceList.getDate());
+                for (AttendanceList attendanceList : atual.getPresences()) {
+                    for (Date date : datesInRange) {
+                        if (date.compareTo(attendanceList.getDate()) == 0) {
+                            System.out.println(date);
+                            atualIncluded.add(attendanceList);
+                            atualIncludedDate.add(date);
+                        }
                     }
                 }
                 event.setPresences(atualIncluded);
 
                 for (Date date : datesInRange) {
                     if (!atualIncludedDate.contains(date)) {
+                        System.out.println(date);
                         event.getPresences().add(this.attendanceListService.createNewList(date));
                     }
                 }
-            } else {
-                event.setPresences(atual.getPresences());
             }
         }
     }
 
     private boolean datesHasChange(Event atual, Event update) {
-        return atual.getStart().compareTo(update.getStart()) != 0 
+        return atual.getStart().compareTo(update.getStart()) != 0
                 || atual.getEnd().compareTo(update.getEnd()) != 0
                 || atual.isWeekendIncluded() != update.isWeekendIncluded();
     }
@@ -122,7 +117,7 @@ public class EventService {
         cal.setTime(d);
 
         int day = cal.get(Calendar.DAY_OF_WEEK);
-        
+
         return day == Calendar.SATURDAY || day == Calendar.SUNDAY;
     }
 

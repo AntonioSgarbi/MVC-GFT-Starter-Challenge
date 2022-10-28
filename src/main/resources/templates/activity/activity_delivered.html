@@ -4,14 +4,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- <script th:src="@{index.js}"></script>
-    <link rel="stylesheet" th:href="@{style.css}"> -->
 </head>
 <div layout:fragment="content">
     <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
     <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
 
-    <form method="POST" th:object="${activity}" th:action="@{/activity/presence-list?eventId=} + ${eventId}" class="form-inline">
+    <form method="POST" th:object="${activity}" th:action="@{/activity/presence-list?eventId=} + ${eventId}"
+        class="form-inline">
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{name}">
         <input type="hidden" th:field="*{start}">
@@ -27,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="table-row" th:each="participant : ${participants}">                        
+                    <tr class="table-row" th:each="participant : ${participants}">
                         <td th:text="${participant.name}"></td>
                         <td>
                             <div class="form-group form-check form-switch">
@@ -52,3 +51,31 @@
 </div>
 
 </html>
+
+
+<form method="POST" th:object="${pontuacaoPorGrupo.listaStatusPresenca}" th:action="@{statusPresenca/salvar}">
+    <tr th:each="statusPresenca, : ${lista}">
+        <td th:text="${statusPresenca.participanteEvento.nome}"></td>
+        <td>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" th:value="1"
+                    th:field="*{listaStatusPresenca.statusPresenca.presente}">
+            </div>
+        </td>
+        <td>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" th:value="1"
+                    th:field="*{listaStatusPresenca.statusPresenca.atrasado}">
+            </div>
+        </td>
+        <td>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" th:value="1"
+                    th:field="*{listaStatusPresenca.statusPresenca.ausente}">
+            </div>
+        </td>
+    </tr>
+
+
+
+</form>

@@ -1,9 +1,7 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
 import org.springframework.core.env.Environment;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import tech.antoniosgarbi.desafiomvc.config.WebSecurityConfig;
 import tech.antoniosgarbi.desafiomvc.model.*;
 import tech.antoniosgarbi.desafiomvc.repository.ParticipantRepository;

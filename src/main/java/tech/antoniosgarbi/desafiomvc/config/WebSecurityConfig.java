@@ -48,10 +48,5 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public void generatePassword() {
-        System.out.println(passwordEncoder().encode("senha_dificil"));
-    }
-
 }
 

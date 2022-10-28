@@ -1,16 +1,14 @@
 package tech.antoniosgarbi.desafiomvc.controller;
 
-import java.util.List;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import tech.antoniosgarbi.desafiomvc.model.Activity;
-import tech.antoniosgarbi.desafiomvc.model.Delivery;
-import tech.antoniosgarbi.desafiomvc.model.Event;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.service.ActivityService;
 import tech.antoniosgarbi.desafiomvc.service.EventService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/activity")
