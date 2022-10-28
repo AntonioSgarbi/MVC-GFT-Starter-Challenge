@@ -34,8 +34,8 @@ public class ParticipantService {
         this.participantRepository.deleteById(id);
     }
 
-    public Page<Participant> findByName(String name) {
-        return this.participantRepository.findByNameContains(name, Pageable.ofSize(10));
+    public Page<Participant> findByName(String name, Pageable pageable) {
+        return this.participantRepository.findByNameContains(name, pageable);
     }
 
     private void checkDuplicate(Participant participant) {

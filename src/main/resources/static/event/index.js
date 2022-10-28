@@ -1,7 +1,6 @@
 const baseUrl = window.location.origin;
 let groupContainer;
 
-
 function addActivity() {
   const newActivity = cloneActivityTemplate();
 
@@ -12,8 +11,8 @@ function addActivity() {
   const inputStart = newActivity
     .querySelector("[activity-start]")
     .querySelector("input");
-  
-    const inputEnd = newActivity
+
+  const inputEnd = newActivity
     .querySelector("[activity-end]")
     .querySelector("input");
 
@@ -31,31 +30,36 @@ function addActivity() {
 }
 
 function cloneGroupTemplate() {
-    return document.querySelector("[group-template]").content.cloneNode(true).children[0];
+  return document.querySelector("[group-template]").content.cloneNode(true)
+    .children[0];
 }
 
 function cloneActivityTemplate() {
-    return document.querySelector("[activity-template]").content.cloneNode(true).children[0];
+  return document.querySelector("[activity-template]").content.cloneNode(true)
+    .children[0];
 }
 
 function renderCreatedGroup(createdGroup) {
-    groupContainer.append(createdGroup);
+  groupContainer.append(createdGroup);
 }
 
-function addGroup() {  
+function addGroup() {
   const newGroup = cloneGroupTemplate();
 
+  if (groupContainer.children[groupContainer.children.length - 1]) {
+    const idFromLastGroup =
+      groupContainer.children[groupContainer.children.length - 1].id;
 
-  if(groupContainer.children[groupContainer.children.length - 1]) {
-    const idFromLastGroup = groupContainer.children[groupContainer.children.length - 1].id;
-  
-    const arrayPositionFromLastGroup = idFromLastGroup.charAt(idFromLastGroup.length - 2);
-  
-    const positionToAddNew = parseInt(arrayPositionFromLastGroup) + 1; 
-    
+    const arrayPositionFromLastGroup = idFromLastGroup.charAt(
+      idFromLastGroup.length - 2
+    );
+
+    const positionToAddNew = parseInt(arrayPositionFromLastGroup) + 1;
+
     newGroup.id = `groups[${positionToAddNew}]`;
-    newGroup.querySelector("[input-group-name]").name = `groups[${positionToAddNew}].name`;
-
+    newGroup.querySelector(
+      "[input-group-name]"
+    ).name = `groups[${positionToAddNew}].name`;
   } else {
     newGroup.id = `groups[0]`;
     newGroup.querySelector("[input-group-name]").name = `groups[0].name`;
@@ -66,6 +70,10 @@ function addGroup() {
   addListenerOnInputSearch(searchInputFromGroup);
 
   renderCreatedGroup(newGroup);
+}
+
+function removeCardGroup(button) {
+  document.querySelector("[group-container]").removeChild(button.closest("[card]"))
 }
 
 function addListenerOnInputSearch(inputSearch) {
@@ -86,7 +94,8 @@ function addParticipantOnGroupMembers(cardElement) {
     .content.cloneNode(true).children[0];
 
   const columnLetters = newRowToAdd.querySelector("[table-row-letters]");
-  columnLetters.textContent = cardElement.querySelector("[card-letters]").textContent;
+  columnLetters.textContent =
+    cardElement.querySelector("[card-letters]").textContent;
 
   const columnName = newRowToAdd.querySelector("[table-row-name]");
   columnName.textContent = cardElement.querySelector("[card-name]").textContent;
@@ -96,8 +105,6 @@ function addParticipantOnGroupMembers(cardElement) {
   inputElement.value = cardElement.querySelector("[card-id]").textContent;
 
   const parentGroup = cardElement.parentNode.parentNode.parentNode;
-
-  
 
   const tbodyFromGroup = cardElement.parentNode.parentNode.parentNode
     .querySelector(".wrapper-table")
@@ -121,6 +128,7 @@ function addParticipantOnGroupMembers(cardElement) {
   }
 
   tableBody.append(newRowToAdd);
+  clearInputSearchAndCardContainer();
 }
 
 function clearCardContainer(container) {
@@ -131,13 +139,13 @@ function clearCardContainer(container) {
 
 function searchByName(container, name) {
   if (name) {
-    fetch(`${baseUrl}/participant/name/${name}`)
+    fetch(`${baseUrl}/participant/name/${name}/?size=9`)
       .then((res) => res.json())
       .then((json) => {
         clearCardContainer(container);
         json.content.map((obj) => {
           const newCardMember = document
-            .querySelector("[search-template]")
+            .querySelector("[card-template]")
             .content.cloneNode(true).children[0];
 
           const id = newCardMember.querySelector("[card-id]");
@@ -158,14 +166,22 @@ function searchByName(container, name) {
   }
 }
 
+function clearInputSearchAndCardContainer() {
+  document
+    .querySelectorAll("[search-container]")
+    .forEach((card) => clearCardContainer(card));
+
+  document.querySelectorAll("[input-search]")
+  .forEach(i => i.value = "")  
+}
+
 window.onload = function () {
-  groupContainer = document.querySelector('[group-container]');
-  
-  const searchsPreLoaded = document.querySelectorAll('[input-search]');
+  groupContainer = document.querySelector("[group-container]");
+
+  const searchsPreLoaded = document.querySelectorAll("[input-search]");
   console.log(searchsPreLoaded);
 
-  for(let i =0; i < searchsPreLoaded.length; i++) {
+  for (let i = 0; i < searchsPreLoaded.length; i++) {
     addListenerOnInputSearch(searchsPreLoaded[i]);
   }
 };
-

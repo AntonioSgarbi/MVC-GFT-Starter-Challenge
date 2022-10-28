@@ -1,6 +1,7 @@
 package tech.antoniosgarbi.desafiomvc.controller;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -93,9 +94,9 @@ public class ParticipantController {
         return mv;
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<Page<Participant>> findByName(@PathVariable String name) {
-        return ResponseEntity.ok(this.participantService.findByName(name));
+    @GetMapping("/name/{name}/")
+    public ResponseEntity<Page<Participant>> findByName(@PathVariable String name, Pageable pageable) {
+        return ResponseEntity.ok(this.participantService.findByName(name, pageable));
     }
 
 }

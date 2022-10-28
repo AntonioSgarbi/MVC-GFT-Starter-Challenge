@@ -22,13 +22,9 @@ public class ActivityController {
     }
 
     @GetMapping("/presence-list")
-    public ModelAndView getPresenceList(@RequestParam Long id, @RequestParam Long eventId, @RequestParam(required = false) boolean newGroupFormation) {
+    public ModelAndView getPresenceList(@RequestParam Long id, @RequestParam Long eventId) {
         ModelAndView mv = new ModelAndView("/activity/activity_delivered.html");
 
-        if(newGroupFormation) {
-            
-        }
-        
         Activity activity = this.activityService.findById(id);
         List<Participant> participants = this.eventService.findAllParticipantsFromEvent(activity);
 
@@ -47,17 +43,14 @@ public class ActivityController {
 
         if(bindingResult.hasErrors()) {
             mv.addObject("message", "error");
-            System.out.println("binding errors");
             return mv;
         }
 
         try {
             this.activityService.save(activity);
             mv.addObject("message", "success");
-            System.out.println("try success");
         } catch(Exception e) {
             mv.addObject("error", e.getMessage());
-            System.out.println("catch");
         }
         return mv;
     }

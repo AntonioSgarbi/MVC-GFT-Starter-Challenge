@@ -22,66 +22,61 @@
 					<div class="p-2 col-12 col-lg-6 col-xxl-4">
 						<div class="card text-white bg-secondary">
 							<div class="card-header">
-								<h2 class="h4 text-center">Informações gerais</h1>
+								<h2 class="h4 text-center">Informações gerais</h2>
 							</div>
-							<div class="card-body px-3"  style="overflow-y: scroll; height:auto; height:auto; max-height: 80vh;">
+							<div class="card-body px-3"
+								style="overflow-y: scroll; height:auto; height:auto; max-height: 80vh;">
 								<input type="hidden" th:field="*{id}">
 
 								<div class="form-group">
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="evt-name">Nome
 											do Evento:</span>
-										<input type="text" class="form-control"
-											aria-label="Sizing example input"
-											th:field="*{name}"
-											aria-describedby="evt-name">
+										<input type="text" class="form-control" aria-label="Sizing example input"
+											th:field="*{name}" aria-describedby="evt-name">
 									</div>
 								</div>
 
 								<div class="form-group">
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="evt-start">Inicio:</span>
-										<input type="date" class="form-control"
-											aria-label="Sizing example input"
-											th:field="*{start}"
-											aria-describedby="evt-start">
+										<input type="date" class="form-control" aria-label="Sizing example input"
+											th:field="*{start}" aria-describedby="evt-start">
 									</div>
 								</div>
 
 								<div class="form-group">
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="evt-end">Fim:</span>
-										<input type="date" class="form-control"
-											aria-label="Sizing example input"
-											th:field="*{end}"
-											aria-describedby="evt-end">
+										<input type="date" class="form-control" aria-label="Sizing example input"
+											th:field="*{end}" aria-describedby="evt-end">
 									</div>
 								</div>
 
 								<div class="form-group">
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="evt-img">URL da Imagem:</span>
-										<input type="text" class="form-control"
-											aria-label="Sizing example input"
-											th:field="*{end}"
-											aria-describedby="evt-img">
+										<input type="text" class="form-control" aria-label="Sizing example input"
+											th:field="*{end}" aria-describedby="evt-img">
 									</div>
 								</div>
 
-								
+
 								<div>
 									<h3 class="h5">Listas de Presença</h3>
 									<div class="form-group form-check form-switch">
 										<label for="evt-week">Presenças no fim de Semana?</label>
-										<input type="checkbox" id="evt-week" class="form-check-input" th:field="*{weekendIncluded}">
+										<input type="checkbox" id="evt-week" class="form-check-input"
+											th:field="*{weekendIncluded}">
 									</div>
 									<div>
 										<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 										gap: .25rem; margin-top: 1rem; margin-right: 1rem;">
 											<div th:each="attendance : ${event.getPresences()}">
-												<a class="p-1 btn btn-primary" 
-												th:href="@{/event/attendance-list?id=} + ${attendance.id} + '&eventId=' + ${event.id}">
-													<div class="d-flex flex-column align-content-center" style="min-width: 100px;">
+												<a class="p-1 btn btn-primary"
+													th:href="@{/event/attendance-list?id=} + ${attendance.id} + '&eventId=' + ${event.id}">
+													<div class="d-flex flex-column align-content-center"
+														style="min-width: 100px;">
 														<p th:text="${attendance.getDayInPortuguese()}"></p>
 														<p th:text="${attendance.getTitle()}"></p>
 													</div>
@@ -103,7 +98,8 @@
 							<div class="card-header">
 								<h2 class="h4 text-center">Atividades</h2>
 							</div>
-							<div class="card-body px-3" style="overflow-y: scroll; height:auto; max-height: 80vh;" activity-container>
+							<div class="card-body px-3" style="overflow-y: scroll; height:auto; max-height: 80vh;"
+								activity-container>
 								<div th:each="activity, iterActivity: *{activities}" class="card p-1 mb-3">
 									<div class="card-header">
 										<div class="d-flex justify-content-between mb-2 mt-1">
@@ -124,25 +120,32 @@
 										</div>
 									</div>
 
-									<div class="form-group mb-3">
-										<label for="start">Data Início:</label>
-										<input class="form-control"
-											th:field="*{activities[__${iterActivity.index}__].start}" type="date">
-										<div class="text-danger" th:if="${#fields.hasErrors('start')}"
-											th:errors="*{start}">
+									<div class="form-group">
+										<div class="input-group mb-3">
+											<span class="input-group-text" id="inputGroup-sizing-default">Data
+												Início:</span>
+											<input type="date" class="form-control" aria-label="Sizing example input"
+												th:field="*{activities[__${iterActivity.index}__].start}"
+												aria-describedby="inputGroup-sizing-default">
 										</div>
 									</div>
 
-									<div class="form-group mb-3">
-										<label for="end">Data Entrega:</label>
-										<input class="form-control"
-											th:field="*{activities[__${iterActivity.index}__].end}" type="date">
+									<div class="form-group">
+										<div class="input-group mb-3">
+											<span class="input-group-text" id="inputGroup-sizing-default">Data
+												Entrega:</span>
+											<input type="date" class="form-control" aria-label="Sizing example input"
+												th:field="*{activities[__${iterActivity.index}__].end}"
+												aria-describedby="inputGroup-sizing-default">
+										</div>
 										<div class="text-danger" th:if="${#fields.hasErrors('end')}" th:errors="*{end}">
 										</div>
 									</div>
+
 									<div class="d-flex justify-content-end mb-3">
 										<a class="btn btn-success"
-											th:href="@{/activity/presence-list?id=} + ${activity.id} + '&eventId=' + ${event.id}">Entregas e
+											th:href="@{/activity/presence-list?id=} + ${activity.id} + '&eventId=' + ${event.id}">Entregas
+											e
 											Atrasos</a>
 									</div>
 								</div>
@@ -158,9 +161,10 @@
 							<div class="card-header">
 								<h2 class="h4 text-center">Grupos</h2>
 							</div>
-							<div class="card-body px-3" style="overflow-y: scroll; height:auto; max-height: 80vh;" group-container>
+							<div class="card-body px-3" style="overflow-y: scroll; height:auto; max-height: 80vh;"
+								group-container>
 
-								<div th:each="group, iterGroup: *{groups}" class="card p-1 pb-3 mb-3"
+								<div card th:each="group, iterGroup: *{groups}" class="card p-1 pb-3 mb-3"
 									th:id="'groups[' + ${iterGroup.index} + ']'">
 									<div class="card-header">
 										<div class="d-flex justify-content-between">
@@ -181,15 +185,15 @@
 											</div>
 
 											<button class="btn btn-outline-danger align-self-center"
-												onclick="this.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode)">Remover</button>
+												onclick="removeCardGroup(this)">Remover</button>
 										</div>
 									</div>
 
-									<div>
-										<div class="search-wrapper">
-											<label for="search" class="text-dark">Buscar participantes para
-												adicionar:</label>
-											<input type="search" id="search" class="w-100" input-search>
+									<div class="form-group">
+										<div class="input-group mb-3">
+											<span class="input-group-text" id="gp-sch">Participantes:</span>
+											<input type="search" class="form-control" aria-label="Sizing example input"
+												aria-describedby="gp-sch" input-search>
 										</div>
 										<div class="search-result" search-container></div>
 									</div>
@@ -245,14 +249,6 @@
 				</div>
 			</div>
 
-
-			<!-- <input type="hidden" required>
-
-			<div class="form-group mb-3" activity-name>
-				<label for="name">Nome:</label>
-				<input class="form-control" type="text" required>
-			</div> -->
-
 			<div class="form-group mb-3" activity-start>
 				<label for="start">Data Início:</label>
 				<input class="form-control" type="date">
@@ -265,7 +261,7 @@
 		</div>
 	</template>
 
-	<template search-template>
+	<template card-template>
 		<div class="card-search-result text-dark" onclick="addParticipantOnGroupMembers(this)">
 			<p style="display: none" card-id></p>
 			<img src="" alt="" card-img>
@@ -275,7 +271,7 @@
 	</template>
 
 	<template group-template>
-		<div class="card p-1 pb-3 mb-3" id="groups[x]">
+		<div card class="card p-1 pb-3 mb-3" id="groups[x]">
 			<div class="card-header">
 				<div class="d-flex justify-content-between">
 					<div class="form-group">
@@ -283,15 +279,15 @@
 						<input class="form-control" type="text" input-group-name required name="groups[x].name">
 					</div>
 					<button class="btn btn-outline-danger align-self-center"
-						onclick="this.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode)">Remover</button>
+						onclick="removeCardGroup(this)">Remover</button>
 				</div>
 			</div>
 
-			<div>
-				<div class="search-wrapper">
-					<label for="search" class="text-dark">Buscar participantes para
-						adicionar:</label>
-					<input type="search" id="search" class="w-100" input-search>
+			<div class="form-group">
+				<div class="input-group mb-3">
+					<span class="input-group-text" id="gp-sch">Participantes:</span>
+					<input type="search" class="form-control" aria-label="Sizing example input"
+						aria-describedby="gp-sch" input-search>
 				</div>
 				<div class="search-result" search-container></div>
 			</div>
@@ -312,7 +308,7 @@
 	</template>
 
 	<template members-row-template>
-		<tr class="table-row" table-row onclick="this.parentNode.removeChild(this)">
+		<tr class="table-row text-success" table-row onclick="this.parentNode.removeChild(this)">
 			<td table-row-letters></td>
 			<td table-row-name></td>
 			<td style="display: none;" table-row-input>

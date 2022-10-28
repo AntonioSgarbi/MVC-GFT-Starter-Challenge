@@ -8,18 +8,6 @@ function removeItem(element) {
 }
 
 function cardClicked(element) {
-    let idElement = element.querySelector("[data-card-id]")
-    let lettersElement = element.querySelector("[data-card-letters]")
-    let nameElement = element.querySelector("[data-card-name]")
-    let emailElement = element.querySelector("[data-card-email]")
-
-    console.log(idElement.textContent)
-
-    let id = idElement.textContent
-    let letters = lettersElement.textContent
-    let name = nameElement.textContent
-    let email = emailElement.textContent
-
     const item = tableTemplate.content.cloneNode(true).children[0]
 
     const columnLetters = item.querySelector("[table-row-letters]")
@@ -29,11 +17,11 @@ function cardClicked(element) {
 
     const inputElement = columnInput.querySelector("[input-table-row]")
 
-    columnLetters.textContent = letters
-    columnName.textContent = name
-    columnEmail.textContent = email
+    columnLetters.textContent = element.querySelector("[data-card-letters]").textContent
+    columnName.textContent = element.querySelector("[data-card-name]").textContent
+    columnEmail.textContent = element.querySelector("[data-card-email]").textContent
 
-    inputElement.value = id
+    inputElement.value = element.querySelector("[data-card-id]").textContent
     inputElement.name = 'members'
 
     tableContainer.append(item)
