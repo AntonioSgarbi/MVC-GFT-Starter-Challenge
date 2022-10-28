@@ -139,14 +139,14 @@ public class DatabaseFillerComponent {
                         eventService.save(e1);
                 }
                 {
-                        Event e1 = new Event(null, "Reunião Tdd", dateFrom(30, 02, 2023), dateFrom(05, 04, 2023), "",
+                        Event e1 = new Event(null, "Reunião Tdd", dateFrom(28, 02, 2023), dateFrom(05, 05, 2023), "",
                                         null, null, null, false);
 
-                        Activity a1 = new Activity(null, "tdd planing", dateFrom(11, 10, 2022), dateFrom(17, 10, 2022),
+                        Activity a1 = new Activity(null, "tdd planing", dateFrom(1, 03, 2023), dateFrom(15, 04, 2023),
                                         null, null);
-                        Activity a2 = new Activity(null, "tdd execution", dateFrom(18, 10, 2022), dateFrom(25, 10, 2022),
+                        Activity a2 = new Activity(null, "tdd execution", dateFrom(16, 04, 2023), dateFrom(25, 04, 2023),
                                         null, null);
-                        Activity a3 = new Activity(null, "tdd finalization", dateFrom(26, 10, 2022), dateFrom(9, 11, 2022),
+                        Activity a3 = new Activity(null, "tdd finalization", dateFrom(26, 04, 2023), dateFrom(03, 05, 2023),
                                         null, null);
 
                         {
