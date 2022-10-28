@@ -1,5 +1,6 @@
 package tech.antoniosgarbi.desafiomvc.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,13 @@ public class UserController {
 
     public UserController(UserDetailsServiceImpl userDetailsServiceImpl) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
+    }
+
+    @GetMapping
+    public ModelAndView getList(Pageable pageable) {
+        ModelAndView mv = new ModelAndView("user/list.html");
+        mv.addObject("page", this.userDetailsServiceImpl.findAll(pageable));
+        return mv;
     }
 
     @GetMapping("/edit")

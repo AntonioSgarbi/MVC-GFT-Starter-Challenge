@@ -24,5 +24,7 @@ public class Activity {
     private Date end;
     @ManyToMany
     private List<Participant> delivered;
+    @ManyToMany
+    private List<Participant> delayed;
 
 }

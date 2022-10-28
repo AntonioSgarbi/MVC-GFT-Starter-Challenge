@@ -1,9 +1,14 @@
 package tech.antoniosgarbi.desafiomvc.controller;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import tech.antoniosgarbi.desafiomvc.model.AttendanceList;
 import tech.antoniosgarbi.desafiomvc.model.Event;
 import tech.antoniosgarbi.desafiomvc.service.EventService;
 
@@ -37,11 +42,16 @@ public class EventController {
         }
         
         mv.addObject("event", event);
+        
+        Set<AttendanceList> ordened = new TreeSet<>();
+        ordened.addAll(event.getPresences());
+
+        mv.addObject("attendanceList", ordened);
         return mv;
     }
 
     @PostMapping("/edit")
-    public ModelAndView salvarDesenvolvedor(Event event, BindingResult bindingResult) {
+    public ModelAndView postForm(Event event, BindingResult bindingResult) {
         ModelAndView mv = new ModelAndView("event/form.html");
         
         boolean isNewRegister = event.getId() == null;
@@ -64,6 +74,11 @@ public class EventController {
             mv.addObject("message", e.getMessage());
         }
         mv.addObject("event", event);
+
+        Set<AttendanceList> ordened = new TreeSet<>();
+        ordened.addAll(event.getPresences());
+
+        mv.addObject("attendanceList", ordened);
 
         return mv;
     }
@@ -90,4 +105,16 @@ public class EventController {
 
         return mv;
     }
+
+    @GetMapping("/attendance-list")
+    public ModelAndView getForm(@RequestParam Long id, @RequestParam Long eventId) {
+        ModelAndView mv = new ModelAndView("event/attendance_list.html");
+        
+        mv.addObject("attendanceList", this.eventService.findAttendanceListById(id));
+        mv.addObject("participants", this.eventService.getParticipantsFromEventId(eventId));
+        
+        return mv;
+    }
+
+
 }

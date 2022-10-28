@@ -44,17 +44,22 @@ function renderCreatedGroup(createdGroup) {
 
 function addGroup() {  
   const newGroup = cloneGroupTemplate();
-  groupContainer = document.querySelector('[group-container]');
+
+
+  if(groupContainer.children[groupContainer.children.length - 1]) {
+    const idFromLastGroup = groupContainer.children[groupContainer.children.length - 1].id;
   
-  const idFromLastGroup = groupContainer.children[groupContainer.children.length - 1].id;
+    const arrayPositionFromLastGroup = idFromLastGroup.charAt(idFromLastGroup.length - 2);
+  
+    const positionToAddNew = parseInt(arrayPositionFromLastGroup) + 1; 
+    
+    newGroup.id = `groups[${positionToAddNew}]`;
+    newGroup.querySelector("[input-group-name]").name = `groups[${positionToAddNew}].name`;
 
-  const arrayPositionFromLastGroup = idFromLastGroup.charAt(idFromLastGroup.length - 2);
-
-  const positionToAddNew = parseInt(arrayPositionFromLastGroup) + 1; 
-
-  newGroup.id = `groups[${positionToAddNew}]`;
-
-  newGroup.querySelector("[input-group-name]").name = `groups[${positionToAddNew}].name`;
+  } else {
+    newGroup.id = `groups[0]`;
+    newGroup.querySelector("[input-group-name]").name = `groups[0].name`;
+  }
 
   const searchInputFromGroup = newGroup.querySelector("[input-search]");
 
@@ -72,31 +77,23 @@ function addListenerOnInputSearch(inputSearch) {
 }
 
 function addParticipantOnGroupMembers(cardElement) {
-  let idElement = cardElement.querySelector("[card-id]");
-  let lettersElement = cardElement.querySelector("[card-letters]");
-  let nameElement = cardElement.querySelector("[card-name]");
-
   const tableBody = cardElement.parentNode.parentNode.parentNode.children[2]
     .querySelector("table")
     .querySelector("[table-body-container]");
-
-  let id = idElement.textContent;
-  let letters = lettersElement.textContent;
-  let name = nameElement.textContent;
 
   const newRowToAdd = document
     .querySelector("[members-row-template]")
     .content.cloneNode(true).children[0];
 
   const columnLetters = newRowToAdd.querySelector("[table-row-letters]");
-  columnLetters.textContent = letters;
+  columnLetters.textContent = cardElement.querySelector("[card-letters]").textContent;
 
   const columnName = newRowToAdd.querySelector("[table-row-name]");
-  columnName.textContent = name;
+  columnName.textContent = cardElement.querySelector("[card-name]").textContent;
 
   const columnInput = newRowToAdd.querySelector("[table-row-input]");
   const inputElement = columnInput.querySelector("[input-table-row]");
-  inputElement.value = id;
+  inputElement.value = cardElement.querySelector("[card-id]").textContent;
 
   const parentGroup = cardElement.parentNode.parentNode.parentNode;
 
@@ -162,6 +159,7 @@ function searchByName(container, name) {
 }
 
 window.onload = function () {
+  groupContainer = document.querySelector('[group-container]');
   
   const searchsPreLoaded = document.querySelectorAll('[input-search]');
   console.log(searchsPreLoaded);

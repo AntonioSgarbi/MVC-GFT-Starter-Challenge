@@ -1,5 +1,7 @@
 package tech.antoniosgarbi.desafiomvc.config;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -41,6 +43,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userRepository.save(userModel);
         System.out.println(password);
         return password;
+    }
+
+    public Page<UserModel> findAll(Pageable pageable) {
+        return this.userRepository.findAll(pageable);
     }
 }
 

@@ -10,11 +10,9 @@ import java.util.*;
 @Service
 public class ActivityService {
     private final ActivityRepository activityRepository;
-    private final DeliveryService deliveryService;
 
-    public ActivityService(ActivityRepository activityRepository, DeliveryService deliveryService) {
+    public ActivityService(ActivityRepository activityRepository) {
         this.activityRepository = activityRepository;
-        this.deliveryService = deliveryService;
     }
 
     public Activity findById(Long id) {
@@ -23,7 +21,7 @@ public class ActivityService {
 
     public Object findForScreen(List<Participant> participants, Activity activity) {
         //participantes do evento x participantes com entrega cadastrada
-
+        // to-do
         
         return null;
     }
@@ -38,6 +36,8 @@ public class ActivityService {
     }
 
     public List<Activity> checkAtivityDeadlineAndPersistTransient(List<Activity> activities, Date eventEndDate) {
+        if(activities == null) return new ArrayList<>();
+        
         List<Activity> verifiedActivities = new LinkedList<>();
 
         for (Activity activity : activities) {

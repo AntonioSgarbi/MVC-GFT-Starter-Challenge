@@ -22,39 +22,78 @@
 					<div class="p-2 col-12 col-lg-6 col-xxl-4">
 						<div class="card text-white bg-secondary">
 							<div class="card-header">
-								<h1 class="h4 text-center">Informações gerais</h1>
+								<h2 class="h4 text-center">Informações gerais</h1>
 							</div>
-							<div class="card-body">
+							<div class="card-body px-3"  style="overflow-y: scroll; height:auto; height:auto; max-height: 80vh;">
 								<input type="hidden" th:field="*{id}">
 
-								<div class="form-group mb-3">
-									<label for="name">Nome:</label>
-									<input class="form-control" type="text" th:field="*{name}" required>
-									<div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+								<div class="form-group">
+									<div class="input-group mb-3">
+										<span class="input-group-text" id="evt-name">Nome
+											do Evento:</span>
+										<input type="text" class="form-control"
+											aria-label="Sizing example input"
+											th:field="*{name}"
+											aria-describedby="evt-name">
 									</div>
 								</div>
 
-								<div class="form-group mb-3">
-									<label for="start">Data Entrega:</label>
-									<input class="form-control" th:field="*{start}" type="date">
-									<div class="text-danger" th:if="${#fields.hasErrors('start')}" th:errors="*{start}">
+								<div class="form-group">
+									<div class="input-group mb-3">
+										<span class="input-group-text" id="evt-start">Inicio:</span>
+										<input type="date" class="form-control"
+											aria-label="Sizing example input"
+											th:field="*{start}"
+											aria-describedby="evt-start">
 									</div>
 								</div>
 
-								<div class="form-group mb-3">
-									<label for="end">Data Entrega:</label>
-									<input class="form-control" th:field="*{end}" type="date">
-									<div class="text-danger" th:if="${#fields.hasErrors('end')}" th:errors="*{end}">
+								<div class="form-group">
+									<div class="input-group mb-3">
+										<span class="input-group-text" id="evt-end">Fim:</span>
+										<input type="date" class="form-control"
+											aria-label="Sizing example input"
+											th:field="*{end}"
+											aria-describedby="evt-end">
 									</div>
 								</div>
 
-								<div class="form-group mb-3">
-									<label for="imageUrl">Caminho da Imagem:</label>
-									<input class="form-control" type="text" th:field="*{imageUrl}" required>
-									<div class="text-danger" th:if="${#fields.hasErrors('imageUrl')}"
-										th:errors="*{imageUrl}">
+								<div class="form-group">
+									<div class="input-group mb-3">
+										<span class="input-group-text" id="evt-img">URL da Imagem:</span>
+										<input type="text" class="form-control"
+											aria-label="Sizing example input"
+											th:field="*{end}"
+											aria-describedby="evt-img">
 									</div>
 								</div>
+
+								
+								<div>
+									<h3 class="h5">Listas de Presença</h3>
+									<div class="form-group form-check form-switch">
+										<label for="evt-week">Presenças no fim de Semana?</label>
+										<input type="checkbox" id="evt-week" class="form-check-input" th:field="*{weekendIncluded}">
+									</div>
+									<div>
+										<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+										gap: .25rem; margin-top: 1rem; margin-right: 1rem;">
+											<div th:each="attendance : ${event.getPresences()}">
+												<a class="p-1 btn btn-primary" 
+												th:href="@{/event/attendance-list?id=} + ${attendance.id} + '&eventId=' + ${event.id}">
+													<div class="d-flex flex-column align-content-center" style="min-width: 100px;">
+														<p th:text="${attendance.getDayInPortuguese()}"></p>
+														<p th:text="${attendance.getTitle()}"></p>
+													</div>
+												</a>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<div class="d-flex justify-content-center mb-3">
+								<p class="btn btn-primary mt-2" style="opacity: 0;">p</p>
 							</div>
 						</div>
 					</div>
@@ -109,7 +148,7 @@
 								</div>
 							</div>
 							<div class="d-flex justify-content-center mb-3">
-								<button class="btn btn-primary" onclick="addActivity()">Adicionar</button>
+								<button class="btn btn-primary mt-2" onclick="addActivity()">Adicionar</button>
 							</div>
 						</div>
 					</div>

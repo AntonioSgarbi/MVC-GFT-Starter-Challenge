@@ -1,10 +1,12 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import tech.antoniosgarbi.desafiomvc.model.Group;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.repository.GroupRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,11 +28,13 @@ public class GroupService {
         return this.groupRepository.save(group);
     }
 
+    @Scheduled
     public List<Group> checkGroups(List<Group> groups) {
+        if(groups == null) return new ArrayList<>();
+
         Map<Long, Participant> participants = new HashMap<>();
 
         List<Group> verifiedGroups = new LinkedList<>();
-
         for (Group group : groups) {
             if (group != null && group.getMembers() != null) {
                 for (Participant participant : group.getMembers()) {

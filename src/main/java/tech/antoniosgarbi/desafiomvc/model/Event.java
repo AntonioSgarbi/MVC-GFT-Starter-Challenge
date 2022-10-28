@@ -28,6 +28,7 @@ public class Event {
     @OneToMany
     private List<Group> groups;
     @OneToMany
-    private List<PresenceList> presence;
+    private List<AttendanceList> presences;
+    private boolean weekendIncluded;
 
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<meta charset="UTF-8">
+<head>
+    <title>Colaboradores</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="d-flex justify-content-center">
+        <table class="table table-striped w-75">
+            <thead>
+            <tr>
+                <th>Login</th>
+                <th>E-mail</th>
+                <th>Opções</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${page.content}">
+                <td th:text="${user.username}" width="40%"></td>
+                <td th:text="${user.email}" width="40%"></td>
+                <td><a class="btn btn-outline-primary btn-sm" th:href="@{/user/edit?id=} + ${user.id}">Editar</a>
+                    <a class="btn btn-outline-danger btn-sm" th:href="@{/user/delete/} + ${user.id}"
+                       onclick="return confirm('Você realmente deseja excluir esse usuário?')">Excluir</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</html>

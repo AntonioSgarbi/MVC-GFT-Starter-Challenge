@@ -11,18 +11,16 @@
     <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
     <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
 
-    <form method="POST" th:object="${activity}" th:action="@{/activity/presence-list?eventId=} + ${eventId}" class="form-inline">
+    <form method="POST" th:object="${attendanceList}" th:action="@{/activity/presence-list?eventId=} + ${eventId}" class="form-inline">
         <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{name}">
-        <input type="hidden" th:field="*{start}">
-        <input type="hidden" th:field="*{end}">
+        <input type="hidden" th:field="*{date}">
 
         <div class="d-flex justify-content-center">
             <table class="table table-striped w-75">
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Entregou</th>
+                        <th>Compareceu</th>
                         <th>Atrasou</th>
                     </tr>
                 </thead>
@@ -32,13 +30,13 @@
                         <td>
                             <div class="form-group form-check form-switch">
                                 <input type="checkbox" class="form-check-input" th:value="${participant.id}"
-                                    th:field="*{delivered}">
+                                    th:field="*{participantsWerePresent}">
                             </div>
                         </td>
                         <td>
                             <div class="form-group form-check form-switch">
                                 <input type="checkbox" class="form-check-input" th:value="${participant.id}"
-                                    th:field="*{delayed}">
+                                    th:field="*{participantsArrivedLate}">
                             </div>
                         </td>
                     </tr>
