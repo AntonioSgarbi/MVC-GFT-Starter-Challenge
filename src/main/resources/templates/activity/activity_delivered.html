@@ -6,8 +6,18 @@
     <meta charset="UTF-8">
 </head>
 <div layout:fragment="content">
-    <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
-    <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+    <div class="d-flex justify-content-center">
+        <div class="w-75">
+            <div class="d-flex alert alert-primary justify-content-between">
+                <div class="mr-0">
+                    <a class="btn btn-primary" th:href="@{/event/edit?id=} + ${eventId}">Ver Evento</a>
+                </div>
+                <div class="text-decoration-underline align-self-center" th:if="${message != null}" th:text="${message}"></div>
+                <div></div>
+            </div>
+            <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+        </div>
+    </div>
 
     <form method="POST" th:object="${activity}" th:action="@{/activity/presence-list?eventId=} + ${eventId}"
         class="form-inline">
@@ -51,31 +61,3 @@
 </div>
 
 </html>
-
-
-<form method="POST" th:object="${pontuacaoPorGrupo.listaStatusPresenca}" th:action="@{statusPresenca/salvar}">
-    <tr th:each="statusPresenca, : ${lista}">
-        <td th:text="${statusPresenca.participanteEvento.nome}"></td>
-        <td>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" th:value="1"
-                    th:field="*{listaStatusPresenca.statusPresenca.presente}">
-            </div>
-        </td>
-        <td>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" th:value="1"
-                    th:field="*{listaStatusPresenca.statusPresenca.atrasado}">
-            </div>
-        </td>
-        <td>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" th:value="1"
-                    th:field="*{listaStatusPresenca.statusPresenca.ausente}">
-            </div>
-        </td>
-    </tr>
-
-
-
-</form>

@@ -30,6 +30,9 @@ public class AttendanceList implements Comparable<AttendanceList> {
     public String getDayInPortuguese() {
         return String.valueOf(ViewHelper.getDayInPortuguese(ViewHelper.getDayOfWeek(date)));
     }
+    public boolean isInThePast() {
+        return this.date.compareTo(new Date()) < 0;
+    }
 
     static class ViewHelper {
 

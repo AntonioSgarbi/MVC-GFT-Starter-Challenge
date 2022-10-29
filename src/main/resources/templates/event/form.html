@@ -8,16 +8,16 @@
 	<link rel="stylesheet" th:href="@{style.css}">
 </head>
 <div layout:fragment="content">
-	<div class="alert alert-success" th:if="${message != null}" th:text="${message}">
-	</div>
-	<div>
+	<div class="p-2 p-md-4">
 		<div>
 			<h1 class="h3 text-center" th:if="${event.getId()}">Editar Evento</h1>
 			<h1 class="h3 text-center" th:unless="${event.getId()}">Novo Evento</h1>
 		</div>
+		<div class="alert alert-success" th:if="${message != null}" th:text="${message}">
+		</div>
 		<div>
 			<form method="POST" th:object="${event}" th:action="@{/event/edit}" class="form-inline">
-				<div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 p-3">
+				<div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3">
 
 					<div class="p-2 col-12 col-lg-6 col-xxl-4">
 						<div class="card text-white bg-secondary">
@@ -70,10 +70,9 @@
 											th:field="*{weekendIncluded}">
 									</div>
 									<div>
-										<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-										gap: .25rem; margin-top: 1rem; margin-right: 1rem;">
-											<div th:each="attendance : ${event.getPresences()}">
-												<a class="p-1 btn btn-primary"
+										<div class="wrapper-attendance-lists">
+											<div th:each="attendance : ${attendanceList}">
+												<a th:class="${attendance.isInThePast()} ? 'p-1 btn btn-success' : 'p-1 btn btn-primary'"
 													th:href="@{/event/attendance-list?id=} + ${attendance.id} + '&eventId=' + ${event.id}">
 													<div class="d-flex flex-column align-content-center"
 														style="min-width: 100px;">
@@ -169,18 +168,31 @@
 									<div class="card-header">
 										<div class="d-flex justify-content-between">
 											<input type="hidden" th:field="*{groups[__${iterGroup.index}__].id}">
-
-											<div class="form-group">
-												<div class="input-group mb-3">
-													<span class="input-group-text"
-														th:id="'inputGroup-group-name' + ${group.id}">Nome do
-														Grupo:</span>
-													<input type="text" class="form-control"
-														th:field="*{groups[__${iterGroup.index}__].name}"
-														th:attr="aria-describedby='input-group-name' + ${group.id}, aria-label='Input Name from group on position ' + ${iterGroup.index}">
+											<div>
+												<div class="form-group">
+													<div class="input-group mb-3">
+														<span class="input-group-text"
+															th:id="'inputGroup-group-name' + ${group.id}">Nome do
+															Grupo:</span>
+														<input type="text" class="form-control"
+															th:field="*{groups[__${iterGroup.index}__].name}"
+															th:attr="aria-describedby='input-group-name' + ${group.id}, aria-label='Input Name from group on position ' + ${iterGroup.index}">
+													</div>
+													<div class="text-danger" th:if="${#fields.hasErrors('name')}"
+														th:errors="*{name}">
+													</div>
 												</div>
-												<div class="text-danger" th:if="${#fields.hasErrors('name')}"
-													th:errors="*{name}">
+												<div class="form-group">
+													<div class="input-group mb-3">
+														<span class="input-group-text"
+															th:id="'inputGroup-group-score' + ${group.id}">Pontuação:</span>
+														<input type="text" class="form-control" disabled
+														th:value="*{groups[__${iterGroup.index}__].score}"
+															th:attr="aria-describedby='input-group-score' + ${group.id}, aria-label='Input Name from group on position ' + ${iterGroup.index}">
+													</div>
+													<div class="text-danger" th:if="${#fields.hasErrors('name')}"
+														th:errors="*{name}">
+													</div>
 												</div>
 											</div>
 

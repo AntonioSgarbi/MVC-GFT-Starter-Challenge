@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import tech.antoniosgarbi.desafiomvc.model.Event;
+import tech.antoniosgarbi.desafiomvc.model.Group;
+import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.service.EventService;
 
 
@@ -22,7 +24,13 @@ public class RankController {
     public ModelAndView loadRankFromEvent(@RequestParam Long eventId) {
         Event event = this.eventService.findById(eventId);
 
+        int score = 0;
+        for(Group group : event.getGroups()) {
+            for(Participant participant : group.getMembers()) {
+                // eventService.
+            }
 
+       }
         return null;
     }
 

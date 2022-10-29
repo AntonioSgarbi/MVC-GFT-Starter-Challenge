@@ -24,7 +24,6 @@ public class GroupService {
         return this.groupRepository.save(group);
     }
 
-    @Scheduled
     public List<Group> checkGroups(List<Group> groups) {
         if(groups == null) return new ArrayList<>();
 

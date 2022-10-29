@@ -2,6 +2,7 @@ package tech.antoniosgarbi.desafiomvc.service;
 
 import org.springframework.stereotype.Service;
 import tech.antoniosgarbi.desafiomvc.model.Activity;
+import tech.antoniosgarbi.desafiomvc.model.Event;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.repository.ActivityRepository;
 
@@ -23,9 +24,9 @@ public class ActivityService {
     }
 
     public Object findForScreen(List<Participant> participants, Activity activity) {
-        //participantes do evento x participantes com entrega cadastrada
+        // participantes do evento x participantes com entrega cadastrada
         // to-do
-        
+
         return null;
     }
 
@@ -38,14 +39,15 @@ public class ActivityService {
         return this.activityRepository.save(activity);
     }
 
-    public List<Activity> checkAtivityDeadlineAndPersistTransient(List<Activity> activities, Date eventEndDate) {
-        if(activities == null) return new ArrayList<>();
-        
+    public List<Activity> checkAtivityDeadlineAndPersistTransient(Event event) {
+        if (event.getActivities() == null)
+            return new ArrayList<>();
+
         List<Activity> verifiedActivities = new LinkedList<>();
 
-        for (Activity activity : activities) {
-            if (this.isValidActivity(activity, eventEndDate))
-                verifiedActivities.add(this.save(activity));
+        for (Activity activity : event.getActivities()) {
+            this.validateActivityDates(activity, event.getStart(), event.getEnd());
+            verifiedActivities.add(this.save(activity));
         }
         return verifiedActivities;
     }
@@ -58,17 +60,11 @@ public class ActivityService {
         this.activityRepository.deleteById(id);
     }
 
-    private boolean isValidActivity(Activity activity, Date eventDeadline) {
-        if (activity != null && activity.getName() != null && activity.getStart() != null
-                && activity.getEnd() != null) {
-            validateActivityDeadLine(activity, eventDeadline);
-            return true;
-        }
-        return false;
-    }
-
-    private void validateActivityDeadLine(Activity activity, Date eventDeadline) {
-        if (activity.getEnd().compareTo(eventDeadline) > 0) {
+    private void validateActivityDates(Activity activity, Date eventInit, Date eventDeadline) {
+        if (activity.getStart().compareTo(eventInit) < 0) {
+            throw new RuntimeException(
+                    "Não é possível cadastrar Atividade com prazo marcado para antes do início do evento");
+        } else if (activity.getEnd().compareTo(eventDeadline) > 0) {
             throw new RuntimeException(
                     "Não é possível cadastrar Atividade com prazo marcado para após o fim do evento");
         }

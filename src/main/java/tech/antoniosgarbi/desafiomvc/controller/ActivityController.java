@@ -26,20 +26,19 @@ public class ActivityController {
         ModelAndView mv = new ModelAndView("/activity/activity_delivered.html");
 
         Activity activity = this.activityService.findById(id);
-        List<Participant> participants = this.eventService.findAllParticipantsFromEvent(activity);
+        List<Participant> participants = this.eventService.findAllParticipantsFromEvent(eventId);
 
-        mv.addObject("activity", activity);
         mv.addObject("eventId", eventId);
-
-        mv.addObject("participants", this.eventService.findAllParticipantsFromEvent(activity));
-        
+        mv.addObject("activity", activity);
+        mv.addObject("participants", participants);
 
         return mv;
     }  
     
     @PostMapping("/presence-list")
     public ModelAndView getPresenceList(Activity activity, @RequestParam Long eventId, BindingResult bindingResult) {
-        ModelAndView mv = new ModelAndView("redirect:/event/edit?isFromActivity=true&id=" + eventId);
+        
+        ModelAndView mv = new ModelAndView("/activity/activity_delivered.html");
 
         if(bindingResult.hasErrors()) {
             mv.addObject("message", "error");
@@ -47,11 +46,19 @@ public class ActivityController {
         }
 
         try {
-            this.activityService.save(activity);
-            mv.addObject("message", "success");
+            Activity saved = this.activityService.save(activity);
+            List<Participant> participants = this.eventService.findAllParticipantsFromEvent(eventId);
+
+            mv.addObject("eventId", eventId);
+            mv.addObject("activity", saved);
+            mv.addObject("participants", participants);
+            mv.addObject("message", "Lista atualizada com Sucesso!");
+            mv.addObject("updated", "true");
+
         } catch(Exception e) {
             mv.addObject("error", e.getMessage());
-        }
+
+        } 
         return mv;
     }
 

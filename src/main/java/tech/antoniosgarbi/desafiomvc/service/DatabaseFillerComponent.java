@@ -2,6 +2,8 @@ package tech.antoniosgarbi.desafiomvc.service;
 
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import tech.antoniosgarbi.desafiomvc.config.WebSecurityConfig;
 import tech.antoniosgarbi.desafiomvc.model.*;
 import tech.antoniosgarbi.desafiomvc.repository.ParticipantRepository;
@@ -14,7 +16,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.Table;
+
 @Service
+@Transactional
 public class DatabaseFillerComponent {
         private final UserRepository userRepository;
         private final ParticipantRepository participantRepository;
@@ -128,9 +133,9 @@ public class DatabaseFillerComponent {
                         }
                         e1.setActivities(Arrays.asList(a1, a2, a3));
 
-                        Group g1 = new Group(null, "grupo 1", List.of(p1, p2, p3));
-                        Group g2 = new Group(null, "grupo 2", List.of(p4, p5, p6));
-                        Group g3 = new Group(null, "grupo 3", List.of(p7, p8, p9));
+                        Group g1 = new Group(null, "grupo 1", 0, List.of(p1, p2, p3));
+                        Group g2 = new Group(null, "grupo 2", 0, List.of(p4, p5, p6));
+                        Group g3 = new Group(null, "grupo 3", 0, List.of(p7, p8, p9));
 
                         e1.setGroups(Arrays.asList(g1, g2, g3));
 
@@ -162,26 +167,14 @@ public class DatabaseFillerComponent {
                         }
                         e1.setActivities(Arrays.asList(a1, a2, a3));
 
-                        Group g1 = new Group(null, "grupo 1", List.of(p1, p2, p3));
-                        Group g2 = new Group(null, "grupo 2", List.of(p4, p5, p6));
-                        Group g3 = new Group(null, "grupo 3", List.of(p7, p8, p9));
+                        Group g1 = new Group(null, "grupo 1", 0, List.of(p1, p2, p3));
+                        Group g2 = new Group(null, "grupo 2", 0, List.of(p4, p5, p6));
+                        Group g3 = new Group(null, "grupo 3", 0, List.of(p7, p8, p9));
 
                         e1.setGroups(Arrays.asList(g1, g2, g3));
 
                         eventService.save(e1);
                 }
-
-                // Activity a4 = new Activity(null, "name", dateFrom(0, 0, 0), dateFrom(0, 0,
-                // 0), List.of());
-
-                // Group g4 = new Group(null, "", List.of());
-                // Group g5 = new Group(null, "", List.of());
-                // Group g6 = new Group(null, "", List.of());
-                // Group g7 = new Group(null, "", List.of());
-                // Group g8 = new Group(null, "", List.of());
-                // Group g9 = new Group(null, "", List.of());
-                // Group g10 = new Group(null, "", List.of());
-                // Group g11 = new Group(null, "", List.of());
 
         }
 
