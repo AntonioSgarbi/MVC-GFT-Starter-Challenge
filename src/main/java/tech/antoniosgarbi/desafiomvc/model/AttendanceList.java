@@ -5,18 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "tb_attendance_list")
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttendanceList implements Comparable<AttendanceList> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     @ManyToMany
     private List<Participant> participantsWerePresent;
@@ -30,6 +34,7 @@ public class AttendanceList implements Comparable<AttendanceList> {
     public String getDayInPortuguese() {
         return String.valueOf(ViewHelper.getDayInPortuguese(ViewHelper.getDayOfWeek(date)));
     }
+    
     public boolean isInThePast() {
         return this.date.compareTo(new Date()) < 0;
     }
@@ -74,25 +79,6 @@ public class AttendanceList implements Comparable<AttendanceList> {
                 case 7 -> dayInPortuguese = "Sábado";
             }
             return dayInPortuguese;
-        }
-
-        static private String monthInPortuguese(int month) {
-            String monthInPortuguese = "";
-            switch (month) {
-                case 1 -> monthInPortuguese = "Janeiro";
-                case 2 -> monthInPortuguese = "Fevereiro";
-                case 3 -> monthInPortuguese = "Março";
-                case 4 -> monthInPortuguese = "Abril";
-                case 5 -> monthInPortuguese = "Maio";
-                case 6 -> monthInPortuguese = "Junho";
-                case 7 -> monthInPortuguese = "Julho";
-                case 8 -> monthInPortuguese = "Agosto";
-                case 9 -> monthInPortuguese = "Setembro";
-                case 10 -> monthInPortuguese = "Outubro";
-                case 11 -> monthInPortuguese = "Novembro";
-                case 12 -> monthInPortuguese = "Dezembro";
-            }
-            return monthInPortuguese;
         }
     }
 

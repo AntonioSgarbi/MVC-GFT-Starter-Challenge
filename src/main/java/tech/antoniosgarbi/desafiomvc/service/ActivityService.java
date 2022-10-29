@@ -23,20 +23,30 @@ public class ActivityService {
         return this.activityRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
     }
 
-    public Object findForScreen(List<Participant> participants, Activity activity) {
-        // participantes do evento x participantes com entrega cadastrada
-        // to-do
-
-        return null;
-    }
-
     public Activity save(Activity activity) {
         if (activity.getDelivered() == null && activity.getId() != null) {
             this.activityRepository
                     .findById(activity.getId())
                     .ifPresent(value -> activity.setDelivered(value.getDelivered()));
         }
+
+        this.removeFromDelayedWhoDidNotDelivered(activity);
+
         return this.activityRepository.save(activity);
+    }
+
+    private void removeFromDelayedWhoDidNotDelivered(Activity activity) {
+        if (activity.getDelivered() == null || activity.getDelayed() == null) {
+            activity.setDelayed(null);
+        } else {
+            List<Participant> deliveredAndDelayed = new LinkedList<>();
+            activity.getDelayed().forEach(participant -> {
+                if (activity.getDelivered().contains(participant)) {
+                    deliveredAndDelayed.add(participant);
+                }
+            });
+            activity.setDelayed(deliveredAndDelayed);
+        }
     }
 
     public List<Activity> checkAtivityDeadlineAndPersistTransient(Event event) {

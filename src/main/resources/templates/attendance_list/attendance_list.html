@@ -8,10 +8,20 @@
     <link rel="stylesheet" th:href="@{style.css}"> -->
 </head>
 <div layout:fragment="content">
-    <div class="alert alert-primary" th:if="${message != null}" th:text="${message}"></div>
-    <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+    <div class="d-flex justify-content-center">
+        <div class="w-75">
+            <div class="d-flex alert alert-primary justify-content-between">
+                <div class="mr-0">
+                    <a class="btn btn-primary" th:href="@{/event/edit?id=} + ${eventId}">Ver Evento</a>
+                </div>
+                <div class="text-decoration-underline align-self-center" th:if="${message != null}" th:text="${message}"></div>
+                <div></div>
+            </div>
+            <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+        </div>
+    </div>
 
-    <form method="POST" th:object="${attendanceList}" th:action="@{/activity/presence-list?eventId=} + ${eventId}" class="form-inline">
+    <form method="POST" th:object="${attendanceList}" th:action="@{/attendance-list?eventId=} + ${eventId}" class="form-inline">
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{date}">
 

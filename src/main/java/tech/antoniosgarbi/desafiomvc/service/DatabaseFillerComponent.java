@@ -10,6 +10,7 @@ import tech.antoniosgarbi.desafiomvc.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
@@ -109,11 +110,11 @@ public class DatabaseFillerComponent {
                                         null, null, null, false);
 
                         Activity a1 = new Activity(null, "agil init", dateFrom(11, 10, 2022), dateFrom(17, 10, 2022),
-                                        null, null);
+                                        new ArrayList<>(), new ArrayList<>());
                         Activity a2 = new Activity(null, "agil mid", dateFrom(18, 10, 2022), dateFrom(25, 10, 2022),
-                                        null, null);
+                                        new ArrayList<>(), new ArrayList<>());
                         Activity a3 = new Activity(null, "agil end", dateFrom(26, 10, 2022), dateFrom(9, 11, 2022),
-                                        null, null);
+                                        new ArrayList<>(), new ArrayList<>());
 
                         {
                                 List<Participant> deliveriesA1 = Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9);
@@ -143,11 +144,13 @@ public class DatabaseFillerComponent {
                                         null, null, null, false);
 
                         Activity a1 = new Activity(null, "tdd planing", dateFrom(1, 03, 2023), dateFrom(15, 04, 2023),
-                                        null, null);
-                        Activity a2 = new Activity(null, "tdd execution", dateFrom(16, 04, 2023), dateFrom(25, 04, 2023),
-                                        null, null);
-                        Activity a3 = new Activity(null, "tdd finalization", dateFrom(26, 04, 2023), dateFrom(03, 05, 2023),
-                                        null, null);
+                                        new ArrayList<>(), new ArrayList<>());
+                        Activity a2 = new Activity(null, "tdd execution", dateFrom(16, 04, 2023),
+                                        dateFrom(25, 04, 2023),
+                                        new ArrayList<>(), new ArrayList<>());
+                        Activity a3 = new Activity(null, "tdd finalization", dateFrom(26, 04, 2023),
+                                        dateFrom(03, 05, 2023),
+                                        new ArrayList<>(), new ArrayList<>());
 
                         {
                                 List<Participant> deliveriesA1 = Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9);

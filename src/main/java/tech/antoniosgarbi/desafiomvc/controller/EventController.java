@@ -4,6 +4,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import tech.antoniosgarbi.desafiomvc.model.Event;
 import tech.antoniosgarbi.desafiomvc.model.Group;
 import tech.antoniosgarbi.desafiomvc.service.EventService;
@@ -11,6 +12,8 @@ import tech.antoniosgarbi.desafiomvc.service.EventService;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.TreeSet;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/event")
@@ -25,60 +28,60 @@ public class EventController {
     public ModelAndView edit(@RequestParam(required = false) Long id, @RequestParam(required = false) String message) {
         ModelAndView mv = new ModelAndView("event/form.html");
         Event event;
+        event = eventService.createEmptyEvent();
 
-        if(id==null) {
-            event = eventService.createEmptyEvent();
-        }else {
+        if (id != null) {
             try {
                 event = eventService.findById(id);
-            }catch(Exception e) {
-                event = new Event();
+                Collections.sort(event.getGroups(),
+                        Comparator.comparingInt(Group::getScore).thenComparing(Group::getName));
+
+            } catch (Exception e) {
                 mv.addObject("message", e.getMessage());
+                mv.addObject("event", event);
+
+                return mv;
             }
         }
-        if(message != null) {
+
+        if (message != null) {
             mv.addObject("message", message);
         }
-        event.getGroups().forEach(g -> {System.out.println(g); System.out.println();});
 
-        event.getGroups().sort(null);
-
-        Collections.sort(event.getGroups(), Comparator.comparing(Group::getScore)
-            .thenComparingInt(Group::getScore));
-        
         mv.addObject("event", event);
-        
         mv.addObject("attendanceList", new TreeSet<>(event.getPresences()));
+
         return mv;
     }
 
     @PostMapping("/edit")
-    public ModelAndView postForm(Event event, BindingResult bindingResult) {
-        ModelAndView mv = new ModelAndView("redirect:/event/edit?id=" + event.getId());
+    public ModelAndView postForm(@Valid Event event, BindingResult bindingResult) {
+        System.out.println("kakakakak");
 
         boolean isNewRegister = event.getId() == null;
+        ModelAndView mv = new ModelAndView("/event/form.html");
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
+            mv.addObject("event", new Event());
             mv.addObject("message", "error");
             return mv;
         }
 
         try {
-            event = eventService.save(event);
+            Event saved = eventService.save(event);
 
-            if(isNewRegister) {
+            if (isNewRegister) {
                 mv.addObject("message", "Evento salvo com sucesso");
-            }else {
+            } else {
                 mv.addObject("message", "Evento atualizado com sucesso");
             }
+            mv.addObject("event", saved);
+            mv.addObject("attendanceList", new TreeSet<>(saved.getPresences()));
 
-        } catch(Exception e) {
+        } catch (Exception e) {
+            mv.addObject("event", event);
             mv.addObject("message", e.getMessage());
-            return mv;
         }
-        
-        mv.addObject("event", event);
-        mv.addObject("attendanceList", new TreeSet<>(event.getPresences()));
 
         return mv;
     }
@@ -99,22 +102,11 @@ public class EventController {
         try {
             eventService.delete(id);
             redirectAttributes.addFlashAttribute("message", "Evento excluído com sucesso.");
-        }catch(Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Erro ao excluir evento!"+ e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Erro ao excluir evento!" + e.getMessage());
         }
 
         return mv;
     }
-
-    @GetMapping("/attendance-list")
-    public ModelAndView getForm(@RequestParam Long id, @RequestParam Long eventId) {
-        ModelAndView mv = new ModelAndView("event/attendance_list.html");
-        
-        mv.addObject("attendanceList", this.eventService.findAttendanceListById(id));
-        mv.addObject("participants", this.eventService.getAllParticipantsFromEventId(eventId));
-        
-        return mv;
-    }
-
 
 }

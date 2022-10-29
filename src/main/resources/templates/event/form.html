@@ -69,11 +69,11 @@
 										<input type="checkbox" id="evt-week" class="form-check-input"
 											th:field="*{weekendIncluded}">
 									</div>
-									<div>
+									<div th:if="${attendanceList != null}">
 										<div class="wrapper-attendance-lists">
 											<div th:each="attendance : ${attendanceList}">
 												<a th:class="${attendance.isInThePast()} ? 'p-1 btn btn-success' : 'p-1 btn btn-primary'"
-													th:href="@{/event/attendance-list?id=} + ${attendance.id} + '&eventId=' + ${event.id}">
+													th:href="@{/attendance-list?id=} + ${attendance.id} + '&eventId=' + ${event.id}">
 													<div class="d-flex flex-column align-content-center"
 														style="min-width: 100px;">
 														<p th:text="${attendance.getDayInPortuguese()}"></p>
@@ -87,7 +87,7 @@
 								</div>
 							</div>
 							<div class="d-flex justify-content-center mb-3">
-								<p class="btn btn-primary mt-2" style="opacity: 0;">p</p>
+								<p class="btn btn-primary mt-2" style="opacity: 0;"></p>
 							</div>
 						</div>
 					</div>
@@ -150,7 +150,7 @@
 								</div>
 							</div>
 							<div class="d-flex justify-content-center mb-3">
-								<button class="btn btn-primary mt-2" onclick="addActivity()">Adicionar</button>
+								<button class="btn btn-primary mt-1" onclick="addActivity()">Adicionar</button>
 							</div>
 						</div>
 					</div>
@@ -234,7 +234,7 @@
 								</div>
 							</div>
 							<div class="d-flex justify-content-center mb-3">
-								<button class="btn btn-primary" onclick="addGroup()">Adicionar</button>
+								<button class="btn btn-primary mt-1" onclick="addGroup()">Adicionar</button>
 							</div>
 						</div>
 					</div>

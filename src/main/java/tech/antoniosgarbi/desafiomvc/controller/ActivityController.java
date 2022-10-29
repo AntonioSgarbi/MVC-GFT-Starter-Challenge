@@ -10,6 +10,8 @@ import tech.antoniosgarbi.desafiomvc.service.EventService;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/activity")
 public class ActivityController {
@@ -36,7 +38,7 @@ public class ActivityController {
     }  
     
     @PostMapping("/presence-list")
-    public ModelAndView getPresenceList(Activity activity, @RequestParam Long eventId, BindingResult bindingResult) {
+    public ModelAndView getPresenceList(@Valid Activity activity, @RequestParam Long eventId, BindingResult bindingResult) {
         
         ModelAndView mv = new ModelAndView("/activity/activity_delivered.html");
 
