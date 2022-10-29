@@ -57,7 +57,7 @@
 									<div class="input-group mb-3">
 										<span class="input-group-text" id="evt-img">URL da Imagem:</span>
 										<input type="text" class="form-control" aria-label="Sizing example input"
-											th:field="*{end}" aria-describedby="evt-img">
+											th:field="*{imageUrl}" aria-describedby="evt-img">
 									</div>
 								</div>
 
@@ -182,6 +182,7 @@
 														th:errors="*{name}">
 													</div>
 												</div>
+												<input type="hidden" th:field="*{groups[__${iterGroup.index}__].score}">
 												<div class="form-group">
 													<div class="input-group mb-3">
 														<span class="input-group-text"
@@ -191,7 +192,7 @@
 															th:attr="aria-describedby='input-group-score' + ${group.id}, aria-label='Input Name from group on position ' + ${iterGroup.index}">
 													</div>
 													<div class="text-danger" th:if="${#fields.hasErrors('name')}"
-														th:errors="*{name}">
+														th:errors="*{groups[__${iterGroup.index}__].score}">
 													</div>
 												</div>
 											</div>
@@ -203,7 +204,7 @@
 
 									<div class="form-group">
 										<div class="input-group mb-3">
-											<span class="input-group-text" id="gp-sch">Participantes:</span>
+											<span class="input-group-text" id="gp-sch"> + Participantes:</span>
 											<input type="search" class="form-control" aria-label="Sizing example input"
 												aria-describedby="gp-sch" input-search>
 										</div>

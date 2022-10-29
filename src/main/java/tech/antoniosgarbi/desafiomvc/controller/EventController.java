@@ -34,12 +34,12 @@ public class EventController {
             try {
                 event = eventService.findById(id);
                 Collections.sort(event.getGroups(),
-                        Comparator.comparingInt(Group::getScore).thenComparing(Group::getName));
+                        Comparator.comparingInt(Group::getScore).reversed().thenComparing(Group::getName));
 
             } catch (Exception e) {
                 mv.addObject("message", e.getMessage());
                 mv.addObject("event", event);
-
+                mv.addObject("attendanceList", new TreeSet<>(event.getPresences()));
                 return mv;
             }
         }
@@ -56,8 +56,6 @@ public class EventController {
 
     @PostMapping("/edit")
     public ModelAndView postForm(@Valid Event event, BindingResult bindingResult) {
-        System.out.println("kakakakak");
-
         boolean isNewRegister = event.getId() == null;
         ModelAndView mv = new ModelAndView("/event/form.html");
 
@@ -79,7 +77,11 @@ public class EventController {
             mv.addObject("attendanceList", new TreeSet<>(saved.getPresences()));
 
         } catch (Exception e) {
-            mv.addObject("event", event);
+            if (!isNewRegister)
+                mv = new ModelAndView("redirect:/event/edit?id=" + event.getId());
+            else
+                mv.addObject("event", event);
+
             mv.addObject("message", e.getMessage());
         }
 
