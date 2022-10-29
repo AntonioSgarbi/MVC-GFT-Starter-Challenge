@@ -1,6 +1,5 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import tech.antoniosgarbi.desafiomvc.model.Group;
 import tech.antoniosgarbi.desafiomvc.model.Participant;

@@ -1,12 +1,10 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
 import lombok.Getter;
-
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import tech.antoniosgarbi.desafiomvc.model.*;
 import tech.antoniosgarbi.desafiomvc.repository.EventRepository;
 

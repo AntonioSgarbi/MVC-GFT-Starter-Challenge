@@ -3,7 +3,6 @@ package tech.antoniosgarbi.desafiomvc.service;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import tech.antoniosgarbi.desafiomvc.config.WebSecurityConfig;
 import tech.antoniosgarbi.desafiomvc.model.*;
 import tech.antoniosgarbi.desafiomvc.repository.ParticipantRepository;
@@ -15,8 +14,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.persistence.Table;
 
 @Service
 @Transactional
