@@ -21,7 +21,7 @@ public class ActivityController {
     private final ActivityService activityService;
     private final EventService eventService;
 
-    @GetMapping("/presence-list")
+    @GetMapping
     public ModelAndView getPresenceList(@RequestParam Long id, @RequestParam Long eventId) {
         ModelAndView mv = new ModelAndView("/activity/activity_delivered.html");
 
@@ -35,7 +35,7 @@ public class ActivityController {
         return mv;
     }  
     
-    @PostMapping("/presence-list")
+    @PostMapping
     public ModelAndView getPresenceList(@Valid Activity activity, @RequestParam Long eventId, BindingResult bindingResult) {
         
         ModelAndView mv = new ModelAndView("/activity/activity_delivered.html");

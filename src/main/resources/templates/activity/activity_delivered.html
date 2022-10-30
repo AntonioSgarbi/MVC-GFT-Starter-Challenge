@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <form method="POST" th:object="${activity}" th:action="@{/activity/presence-list?eventId=} + ${eventId}"
+    <form method="POST" th:object="${activity}" th:action="@{/activity?eventId=} + ${eventId}"
         class="form-inline">
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{name}">

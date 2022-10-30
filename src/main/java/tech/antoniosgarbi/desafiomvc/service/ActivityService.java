@@ -70,10 +70,17 @@ public class ActivityService {
     }
 
     private void validateActivityDates(Activity activity, Date eventInit, Date eventDeadline) {
+        if (activity.getStart().compareTo(activity.getEnd()) > 0) {
+            throw new RuntimeException("O inicio da atividade não pode ser cadastrado para depois do fim! Atividade: "
+                    + activity.getName());
+        }
+
         if (activity.getStart().compareTo(eventInit) < 0) {
             throw new RuntimeException(
                     "Não é possível cadastrar Atividade com prazo marcado para antes do início do evento");
-        } else if (activity.getEnd().compareTo(eventDeadline) > 0) {
+        }
+
+        if (activity.getEnd().compareTo(eventDeadline) > 0) {
             throw new RuntimeException(
                     "Não é possível cadastrar Atividade com prazo marcado para após o fim do evento");
         }

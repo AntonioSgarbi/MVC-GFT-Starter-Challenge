@@ -23,7 +23,7 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping("/edit")
-    public ModelAndView edit(@RequestParam(required = false) Long id, @RequestParam(required = false) String message) {
+    public ModelAndView edit(@RequestParam(required = false) Long id, @RequestParam(required = false) String message, @RequestParam(required = false) String error) {
         ModelAndView mv = new ModelAndView("event/form.html");
         Event event;
         event = eventService.createEmptyEvent();
@@ -44,6 +44,11 @@ public class EventController {
 
         if (message != null) {
             mv.addObject("message", message);
+        }
+
+        if (error != null) {
+            System.out.println(error);
+            mv.addObject("message", error);
         }
 
         mv.addObject("event", event);
@@ -75,11 +80,11 @@ public class EventController {
             mv.addObject("attendanceList", new TreeSet<>(saved.getPresences()));
 
         } catch (Exception e) {
-            if (!isNewRegister)
-                mv = new ModelAndView("redirect:/event/edit?id=" + event.getId());
-            else
-                mv.addObject("event", event);
-
+            if (!isNewRegister) {
+                Event fromDB = eventService.findById(event.getId());
+                mv.addObject("attendanceList", new TreeSet<>(fromDB.getPresences()));
+            }
+            mv.addObject("event", event);
             mv.addObject("error", e.getMessage());
         }
 
