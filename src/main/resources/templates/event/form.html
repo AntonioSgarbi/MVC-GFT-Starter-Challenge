@@ -170,7 +170,8 @@
 								group-container>
 
 								<div card th:each="group, iterGroup: *{groups}" class="card p-1 pb-3 mb-3"
-									th:id="'groups[' + ${iterGroup.index} + ']'">
+									th:id="'groups[' + ${iterGroup.index} + ']'" card-group>
+
 									<div class="card-header">
 										<div class="d-flex justify-content-between">
 											<input type="hidden" th:field="*{groups[__${iterGroup.index}__].id}">
@@ -197,9 +198,7 @@
 															th:value="*{groups[__${iterGroup.index}__].score}"
 															th:attr="aria-describedby='input-group-score' + ${group.id}, aria-label='Input Name from group on position ' + ${iterGroup.index}">
 													</div>
-													<div class="text-danger" th:if="${#fields.hasErrors('name')}"
-														th:errors="*{groups[__${iterGroup.index}__].score}">
-													</div>
+
 												</div>
 											</div>
 
@@ -209,6 +208,16 @@
 									</div>
 
 									<div class="form-group">
+										<div class="input-group mb-3">
+											<span class="input-group-text"
+												th:id="'inputGroup-group-size' + ${group.id}">Total de Participantes:</span>
+											<input type="text" class="form-control" disabled
+												th:value="${group.getMembers().size()}"
+												th:attr="aria-describedby='input-group-size' + ${group.id}, aria-label='Input Name from group on position ' + ${iterGroup.index}">
+										</div>
+									</div>
+
+									<div class="form-group" wrapper-search>
 										<div class="input-group mb-3">
 											<span class="input-group-text" id="gp-sch"> + Participantes:</span>
 											<input type="search" class="form-control" aria-label="Sizing example input"
@@ -281,7 +290,7 @@
 	</template>
 
 	<template card-template>
-		<div class="card-search-result text-dark" onclick="addParticipantOnGroupMembers(this)">
+		<div class="card-search-result text-dark" onclick="addParticipantOnGroupTable(this)">
 			<p style="display: none" card-id></p>
 			<img src="" alt="" card-img>
 			<p card-letters></p>
@@ -290,7 +299,7 @@
 	</template>
 
 	<template group-template>
-		<div card class="card p-1 pb-3 mb-3" id="groups[x]">
+		<div card class="card p-1 pb-3 mb-3" id="groups[x]" card-group>
 			<div class="card-header">
 				<div class="d-flex justify-content-between">
 					<div class="form-group">
@@ -302,9 +311,9 @@
 				</div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group" wrapper-search>
 				<div class="input-group mb-3">
-					<span class="input-group-text" id="gp-sch">Participantes:</span>
+					<span class="input-group-text" id="gp-sch">+ Participantes:</span>
 					<input type="search" class="form-control" aria-label="Sizing example input"
 						aria-describedby="gp-sch" input-search>
 				</div>

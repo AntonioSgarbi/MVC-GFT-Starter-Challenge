@@ -79,50 +79,33 @@ function removeCardGroup(button) {
 function addListenerOnInputSearch(inputSearch) {
   inputSearch.addEventListener("input", (e) => {
     const value = e.target.value;
-    const parentGroupFromSearch = e.target.parentNode.parentNode.children[1];
+    const parentGroupFromSearch = e.target.closest('[wrapper-search]').querySelector('[search-container]');
     searchByName(parentGroupFromSearch, value);
   });
 }
 
-function addParticipantOnGroupMembers(cardElement) {
-  const tableBody = cardElement.parentNode.parentNode.parentNode.children[2]
-    .querySelector("table")
-    .querySelector("[table-body-container]");
+function addParticipantOnGroupTable(cardElement) {
+  const parentGroup = cardElement.closest('[card-group]');
+  const tableBody = parentGroup.querySelector('[table-body-container]');
+  
+  const newRowToAdd = document.querySelector("[members-row-template]").content.cloneNode(true).children[0];
 
-  const newRowToAdd = document
-    .querySelector("[members-row-template]")
-    .content.cloneNode(true).children[0];
+  const lettersColumn = newRowToAdd.querySelector("[table-row-letters]");
+  lettersColumn.textContent = cardElement.querySelector("[card-letters]").textContent;
 
-  const columnLetters = newRowToAdd.querySelector("[table-row-letters]");
-  columnLetters.textContent =
-    cardElement.querySelector("[card-letters]").textContent;
+  const nameColumn = newRowToAdd.querySelector("[table-row-name]");
+  nameColumn.textContent = cardElement.querySelector("[card-name]").textContent;
 
-  const columnName = newRowToAdd.querySelector("[table-row-name]");
-  columnName.textContent = cardElement.querySelector("[card-name]").textContent;
-
-  const columnInput = newRowToAdd.querySelector("[table-row-input]");
-  const inputElement = columnInput.querySelector("[input-table-row]");
+  const inputColumn = newRowToAdd.querySelector("[table-row-input]");
+  const inputElement = inputColumn.querySelector("[input-table-row]");
   inputElement.value = cardElement.querySelector("[card-id]").textContent;
 
-  const parentGroup = cardElement.parentNode.parentNode.parentNode;
-
-  const tbodyFromGroup = cardElement.parentNode.parentNode.parentNode
-    .querySelector(".wrapper-table")
-    .querySelector("table")
-    .querySelector("tbody");
-
-  const lastTrInTableFromGroup =
-    tbodyFromGroup.children[tbodyFromGroup.children.length - 1];
+  const lastTrInTableFromGroup = tableBody.children[tableBody.children.length - 1];
 
   if (lastTrInTableFromGroup) {
-    const inputNameFromLastMemberInTable =
-      lastTrInTableFromGroup.querySelector("[input-table-row]").name;
-    const positionOnArrayFromLastMember = inputNameFromLastMemberInTable.charAt(
-      inputNameFromLastMemberInTable.length - 2
-    );
-    inputElement.name = `${parentGroup.id}.members[${
-      parseInt(positionOnArrayFromLastMember) + 1
-    }]`;
+    const inputNameFromLastMemberInTable = lastTrInTableFromGroup.querySelector("[input-table-row]").name;
+    const positionOnArrayFromLastMember = inputNameFromLastMemberInTable.charAt(inputNameFromLastMemberInTable.length - 2);
+    inputElement.name = `${parentGroup.id}.members[${parseInt(positionOnArrayFromLastMember) + 1}]`;
   } else {
     inputElement.name = `${parentGroup.id}.members[0]`;
   }
@@ -179,7 +162,6 @@ window.onload = function () {
   groupContainer = document.querySelector("[group-container]");
 
   const searchsPreLoaded = document.querySelectorAll("[input-search]");
-  console.log(searchsPreLoaded);
 
   for (let i = 0; i < searchsPreLoaded.length; i++) {
     addListenerOnInputSearch(searchsPreLoaded[i]);
