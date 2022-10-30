@@ -27,6 +27,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()
                     .antMatchers("/")
                         .permitAll()
+                    .antMatchers("/ranking/**")
+                        .permitAll()
                     .antMatchers("/auth/**")
                         .permitAll()
                     .anyRequest()

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/ranking/layout.html}">
+<meta charset="UTF-8">
+
+<head>
+    <title>Ranking</title>
+    <link rel="stylesheet" th:href="@{/ranking/style.css}">
+</head>
+
+<div layout:fragment="content">
+
+    <div class="d-flex justify-content-center">
+        <div class="w-75">
+            <h1 class="text-center text-white mb-5" th:text="'Evento: ' + ${event.getName()}"></h1>
+            <h2 class="text-center text-white mb-5">Classificação</h2>
+            <div th:each="group, iter : ${event.getGroups}" class="card mb-2 p-3 d-flex flex-row justify-content-around text-white"
+                style="text-decoration: none;">
+                <div class="d-flex flex-column" style="align-content: space-around;">
+                    <h2 th:text="'Groupo: ' + ${group.name}"></h2>
+                    <h3 th:text="'Pontuação: ' + ${group.score}"></h3>
+                </div>
+                <div>
+                    <h3>Integrantes</h3>
+                    <ul>
+                        <li th:each="member: ${group.getMembers()}">
+                            <p th:text="${member.name}"></p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</html>

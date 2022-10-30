@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/ranking/layout.html}">
+<meta charset="UTF-8">
+
+<head>
+    <title>Eventos</title>
+    <link rel="stylesheet" th:href="@{ranking/style.css}">
+
+    <style>
+        
+    </style>
+</head>
+
+<div layout:fragment="content">
+
+    <div class="d-flex justify-content-center">
+        <div class="w-75 card-container">
+            <a th:each="event, iter : ${events}" class="card" th:href="@{/ranking/event?eventId=} + ${event.getId()}" style="text-decoration: none;">
+                <img th:if="${event.imageUrl != null or not #strings.isEmpty(event.imageUrl)}" th:src="${event.imageUrl} ">
+                <img th:unless="${event.imageUrl != null and not #strings.isEmpty(event.imageUrl)}" th:src="'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'">
+                <h2 class="text-center text-white" th:text="${event.name}"></h2>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</html>

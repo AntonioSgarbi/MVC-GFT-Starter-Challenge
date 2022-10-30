@@ -15,10 +15,10 @@ public class AuthController {
         return new ModelAndView("/auth/login.html");
     }
 
-    @RequestMapping("/login-error.html")
-    public String loginError(Model model) {
-        model.addAttribute("loginError", true);
-        return "login.html";
+    @GetMapping("/login-error.html")
+    public ModelAndView loginError() {
+        ModelAndView mv =  new ModelAndView("/auth/login.html");
+        return mv;
     }
 
 }
