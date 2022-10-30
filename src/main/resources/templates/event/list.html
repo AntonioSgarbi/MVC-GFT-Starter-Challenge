@@ -28,7 +28,7 @@
                     <td th:text="${event.name}" width="70%"></td>
                     <td><a class="btn btn-outline-primary btn-sm" th:href="@{/event/edit?id=} + ${event.id}">Editar</a>
                         <a class="btn btn-outline-danger btn-sm" th:href="@{/event/delete/} + ${event.id}"
-                            onclick="return confirm('Você realmente deseja excluir essa linguagem?')">Excluir</a>
+                            onclick="return confirm('Você realmente deseja excluir esse evento?')">Excluir</a>
                     </td>
                 </tr>
             </tbody>

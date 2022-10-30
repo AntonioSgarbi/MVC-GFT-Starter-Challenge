@@ -30,7 +30,7 @@
                 <td th:text="${participant.email}" width="40%"></td>
                 <td><a class="btn btn-outline-primary btn-sm" th:href="@{/participant/edit?id=} + ${participant.id}">Editar</a>
                     <a class="btn btn-outline-danger btn-sm" th:href="@{/participant/delete/} + ${participant.id}"
-                       onclick="return confirm('Você realmente deseja excluir essa linguagem?')">Excluir</a>
+                       onclick="return confirm('Você realmente deseja excluir esse participante?')">Excluir</a>
                 </td>
             </tr>
             </tbody>
