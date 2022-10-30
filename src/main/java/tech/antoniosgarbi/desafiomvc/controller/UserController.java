@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,7 +33,7 @@ public class UserController {
         mv.addObject("user", new UserModel());
         return mv;
     }
-
+    
     @PostMapping("/edit")
     public ModelAndView postForm(UserModel userModel, BindingResult bindingResult) {
         ModelAndView mv = new ModelAndView("user/form.html");
@@ -41,6 +42,14 @@ public class UserController {
         String password = this.userDetailsServiceImpl.createUser(userModel);
         mv.addObject("message", "Usuário criado, senha: " + password);
         
+        return mv;
+    }
+    
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable Long id) {
+        this.userDetailsServiceImpl.delete(id);
+        ModelAndView mv = new ModelAndView("redirect:/user");
+        mv.addObject("user", new UserModel());
         return mv;
     }
 }

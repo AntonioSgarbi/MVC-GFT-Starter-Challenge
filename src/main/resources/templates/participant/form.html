@@ -1,52 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout.html}">
 <meta charset="UTF-8">
 <div layout:fragment="content">
 	<div class="alert alert-primary" th:if="${message != null}" th:text="${message}">
 	</div>
-	<div class="card">
-		<div class="card-header">
-			<p class="text-primary">Novo Participante</p>
-		</div>
-		<div class="card-body">
-			<form method="POST" th:object="${participant}" th:action="@{/participant/edit}">
-				<input type="hidden" th:field="*{id}">
-
-				<div class="form-group mb-3">
-					<label for="name">Nome:</label>
-					<input class="form-control" type="text" th:field="*{name}" required>
-					<div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-				</div>
-
-				<div class="form-group mb-3">
-					<label for="letters">Quatro Letras:</label>
-					<input class="form-control" type="text" th:field="*{letters}" maxlength="4" required>
-					<div class="text-danger" th:if="${#fields.hasErrors('letters')}" th:errors="*{letters}"></div>
-				</div>
-
-				<div class="form-group mb-3">
-					<label for="level">Nível:</label>
-					<input class="form-control" type="text" th:field="*{level}" required>
-					<div class="text-danger" th:if="${#fields.hasErrors('level')}" th:errors="*{level}"></div>
-				</div>
-
-				<div class="form-group mb-3">
-					<label for="email">Email:</label>
-					<input class="form-control" type="email" th:field="*{email}" required>
-					<div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-				</div>
-
-				<div class="form-group mb-3">
-					<label for="imageUrl">Caminho da imagem:</label>
-					<input class="form-control" type="text" th:field="*{imageUrl}" required>
-					<div class="text-danger" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></div>
-				</div>
-
-				<button type="submit" class="btn btn-primary">Salvar Participante</button>
-			</form>
-		</div>
+	<h1 class="h3 text-center" th:if="${participant.getId() != null}">Editar Participante</h1>
+	<h1 class="h3 text-center" th:unless="${participant.getId() != null}">Novo Participante</h1>
+	<div class="d-flex justify-content-center">
+		<form class="w-75" method="POST" th:object="${participant}" th:action="@{/participant/edit}">
+			<input type="hidden" th:field="*{id}">
+	
+			<div class="form-group mb-3">
+				<label for="name">Nome:</label>
+				<input class="form-control" type="text" th:field="*{name}" required>
+				<div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+			</div>
+	
+			<div class="form-group mb-3">
+				<label for="letters">Quatro Letras:</label>
+				<input class="form-control" type="text" th:field="*{letters}" maxlength="4" required>
+				<div class="text-danger" th:if="${#fields.hasErrors('letters')}" th:errors="*{letters}"></div>
+			</div>
+	
+			<div class="form-group mb-3">
+				<label for="level">Nível:</label>
+				<input class="form-control" type="text" th:field="*{level}" required>
+				<div class="text-danger" th:if="${#fields.hasErrors('level')}" th:errors="*{level}"></div>
+			</div>
+	
+			<div class="form-group mb-3">
+				<label for="email">Email:</label>
+				<input class="form-control" type="email" th:field="*{email}" required>
+				<div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+			</div>
+	
+			<div class="form-group mb-3">
+				<label for="imageUrl">Caminho da imagem:</label>
+				<input class="form-control" type="text" th:field="*{imageUrl}" required>
+				<div class="text-danger" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></div>
+			</div>
+	
+			<button type="submit" class="btn btn-primary">Salvar Participante</button>
+		</form>
 	</div>
 </div>
 

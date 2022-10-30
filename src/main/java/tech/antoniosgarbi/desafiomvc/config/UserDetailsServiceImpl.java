@@ -48,5 +48,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public Page<UserModel> findAll(Pageable pageable) {
         return this.userRepository.findAll(pageable);
     }
+
+    public void delete(Long id) {
+        this.userRepository.deleteById(id);
+    }
 }
 

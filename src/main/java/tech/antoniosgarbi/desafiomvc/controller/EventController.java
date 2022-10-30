@@ -37,7 +37,7 @@ public class EventController {
                         Comparator.comparingInt(Group::getScore).reversed().thenComparing(Group::getName));
 
             } catch (Exception e) {
-                mv.addObject("message", e.getMessage());
+                mv.addObject("error", e.getMessage());
                 mv.addObject("event", event);
                 mv.addObject("attendanceList", new TreeSet<>(event.getPresences()));
                 return mv;
@@ -82,7 +82,7 @@ public class EventController {
             else
                 mv.addObject("event", event);
 
-            mv.addObject("message", e.getMessage());
+            mv.addObject("error", e.getMessage());
         }
 
         return mv;

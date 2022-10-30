@@ -1,34 +1,36 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
 <meta charset="UTF-8">
+
 <head>
-    <title>Title</title>
+    <title>Eventos</title>
 </head>
 
 <div layout:fragment="content">
+    <h1 class="h3 text-center">Eventos</h1>
+
     <div class="d-flex justify-content-center">
         <table class="table table-striped w-75">
             <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Opções</th>
-            </tr>
+                <tr>
+                    <th>Nome</th>
+                    <th>Opções</th>
+                </tr>
             </thead>
             <tbody>
-            <tr th:if="${#lists.isEmpty(list)}">
-                <td colspan="3">Sem conteúdo</td>
-            </tr>
+                <tr th:if="${#lists.isEmpty(list)}">
+                    <td colspan="3">Sem conteúdo</td>
+                </tr>
             </tbody>
             <tbody th:unless="${#lists.isEmpty(list)}">
-            <tr th:each="event : ${list}">
-                <td th:text="${event.name}" width="70%"></td>
-                <td><a class="btn btn-outline-primary btn-sm" th:href="@{/event/edit?id=} + ${event.id}">Editar</a>
-                    <a class="btn btn-outline-danger btn-sm" th:href="@{/event/delete/} + ${event.id}"
-                       onclick="return confirm('Você realmente deseja excluir essa linguagem?')">Excluir</a>
-                </td>
-            </tr>
+                <tr th:each="event : ${list}">
+                    <td th:text="${event.name}" width="70%"></td>
+                    <td><a class="btn btn-outline-primary btn-sm" th:href="@{/event/edit?id=} + ${event.id}">Editar</a>
+                        <a class="btn btn-outline-danger btn-sm" th:href="@{/event/delete/} + ${event.id}"
+                            onclick="return confirm('Você realmente deseja excluir essa linguagem?')">Excluir</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

@@ -3,6 +3,7 @@
 	layout:decorate="~{layout.html}">
 
 <head>
+	<title>Cadastrar Evento</title>
 	<meta charset="UTF-8">
 	<script th:src="@{index.js}"></script>
 	<link rel="stylesheet" th:href="@{style.css}">
@@ -13,7 +14,12 @@
 			<h1 class="h3 text-center" th:if="${event.getId()}">Editar Evento</h1>
 			<h1 class="h3 text-center" th:unless="${event.getId()}">Novo Evento</h1>
 		</div>
-		<div class="alert alert-success" th:if="${message != null}" th:text="${message}">
+		<div class="d-flex justify-content-center">
+			<div class="w-75">
+				<div class="alert-primary text-decoration-underline align-self-center" th:if="${message != null}"
+					th:text="${message}"></div>
+				<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+			</div>
 		</div>
 		<div>
 			<form method="POST" th:object="${event}" th:action="@{/event/edit}" class="form-inline">
@@ -188,7 +194,7 @@
 														<span class="input-group-text"
 															th:id="'inputGroup-group-score' + ${group.id}">Pontuação:</span>
 														<input type="text" class="form-control" disabled
-														th:value="*{groups[__${iterGroup.index}__].score}"
+															th:value="*{groups[__${iterGroup.index}__].score}"
 															th:attr="aria-describedby='input-group-score' + ${group.id}, aria-label='Input Name from group on position ' + ${iterGroup.index}">
 													</div>
 													<div class="text-danger" th:if="${#fields.hasErrors('name')}"
