@@ -88,7 +88,21 @@ public class EventService {
     }
 
     public void delete(Long id) {
-        this.eventRepository.deleteById(id);
+        Event event = this.findById(id);
+        List<Activity> activities = event.getActivities();
+        List<AttendanceList> attendanceLists = event.getPresences();
+        List<Group> groups = event.getGroups();
+
+        event.setActivities(null);
+        event.setPresences(null);
+        event.setGroups(null);
+        
+        this.eventRepository.save(event);
+        this.eventRepository.delete(event);
+
+        this.activityService.deleteAll(activities);
+        this.attendanceListService.deleteAll(attendanceLists);
+        this.groupService.deleteAll(groups);
     }
 
     public List<Participant> getAllParticipantsFromEvent(Event event) {

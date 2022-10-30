@@ -1,6 +1,8 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
 import org.springframework.stereotype.Service;
+
+import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.Activity;
 import tech.antoniosgarbi.desafiomvc.model.Event;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
@@ -12,12 +14,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ActivityService {
     private final ActivityRepository activityRepository;
-
-    public ActivityService(ActivityRepository activityRepository) {
-        this.activityRepository = activityRepository;
-    }
 
     public Activity findById(Long id) {
         return this.activityRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
@@ -78,6 +77,24 @@ public class ActivityService {
             throw new RuntimeException(
                     "Não é possível cadastrar Atividade com prazo marcado para após o fim do evento");
         }
+    }
+
+    public void deleteAll(List<Activity> activities) {
+        activities.forEach(a -> {
+            a.setDelivered(null);
+            a.setDelayed(null);
+        });
+        this.activityRepository.saveAll(activities);
+        this.activityRepository.deleteAll(activities);
+    }
+
+    public void removeReferencesFromParticipant(Participant participant) {
+        List<Activity> activities = this.activityRepository.findAllByDeliveredContains(participant);
+        activities.forEach(a -> {
+            a.getDelivered().remove(participant);
+            a.getDelayed().remove(participant);
+        });
+        this.activityRepository.saveAll(activities);
     }
 
 }

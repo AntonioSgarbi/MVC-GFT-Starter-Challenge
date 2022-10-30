@@ -3,6 +3,8 @@ package tech.antoniosgarbi.desafiomvc.controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.Activity;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.service.ActivityService;
@@ -14,14 +16,10 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/activity")
+@AllArgsConstructor
 public class ActivityController {
     private final ActivityService activityService;
     private final EventService eventService;
-
-    public ActivityController(ActivityService activityService, EventService eventService) {
-        this.activityService = activityService;
-        this.eventService = eventService;
-    }
 
     @GetMapping("/presence-list")
     public ModelAndView getPresenceList(@RequestParam Long id, @RequestParam Long eventId) {

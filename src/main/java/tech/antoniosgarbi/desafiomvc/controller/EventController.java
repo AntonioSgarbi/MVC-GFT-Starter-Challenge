@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.Event;
 import tech.antoniosgarbi.desafiomvc.model.Group;
 import tech.antoniosgarbi.desafiomvc.service.EventService;
@@ -17,12 +18,9 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/event")
+@AllArgsConstructor
 public class EventController {
     private final EventService eventService;
-
-    public EventController(EventService eventService) {
-        this.eventService = eventService;
-    }
 
     @GetMapping("/edit")
     public ModelAndView edit(@RequestParam(required = false) Long id, @RequestParam(required = false) String message) {
@@ -105,7 +103,7 @@ public class EventController {
             eventService.delete(id);
             redirectAttributes.addFlashAttribute("message", "Evento excluído com sucesso.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Erro ao excluir evento!" + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Erro ao excluir evento!" + e.getMessage());
         }
 
         return mv;

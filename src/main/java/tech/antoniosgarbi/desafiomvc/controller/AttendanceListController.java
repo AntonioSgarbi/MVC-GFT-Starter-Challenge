@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.AttendanceList;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.service.AttendanceListService;
@@ -19,14 +20,10 @@ import tech.antoniosgarbi.desafiomvc.service.EventService;
 
 @Controller
 @RequestMapping("/attendance-list")
+@AllArgsConstructor
 public class AttendanceListController {
     private final AttendanceListService attendanceListService;
     private final EventService eventService;
-
-    public AttendanceListController(AttendanceListService attendanceListService, EventService eventService) {
-        this.attendanceListService = attendanceListService;
-        this.eventService = eventService;
-    }
 
     @GetMapping
     public ModelAndView getForm(@RequestParam Long id, @RequestParam Long eventId) {

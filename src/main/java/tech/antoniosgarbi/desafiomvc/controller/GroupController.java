@@ -4,6 +4,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.Group;
 import tech.antoniosgarbi.desafiomvc.service.GroupService;
 
@@ -11,12 +13,9 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/group")
+@AllArgsConstructor
 public class GroupController {
     private final GroupService groupService;
-
-    public GroupController(GroupService groupService) {
-        this.groupService = groupService;
-    }
 
     @GetMapping("/edit")
     public ModelAndView edit(@RequestParam(required = false) Long id) {

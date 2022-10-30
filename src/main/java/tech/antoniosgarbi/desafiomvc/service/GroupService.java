@@ -1,6 +1,8 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
 import org.springframework.stereotype.Service;
+
+import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.Group;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.repository.GroupRepository;
@@ -8,12 +10,9 @@ import tech.antoniosgarbi.desafiomvc.repository.GroupRepository;
 import java.util.*;
 
 @Service
+@AllArgsConstructor
 public class GroupService {
     private final GroupRepository groupRepository;
-
-    public GroupService(GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
-    }
 
     public Group findById(Long id) {
         return this.groupRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
@@ -51,6 +50,23 @@ public class GroupService {
 
     public void delete(Long id) {
         this.groupRepository.deleteById(id);
+    }
+
+    public void deleteAll(List<Group> groups) {
+        groups.forEach(g -> {
+            g.setMembers(null);
+        });
+        this.groupRepository.saveAll(groups);
+        this.groupRepository.deleteAll(groups);
+    }
+
+    public void removeReferencesFromParticipant(Participant participant) {
+        List<Group> groups = this.groupRepository.findAllByMembersContains(participant);
+        groups.forEach(g -> {
+            g.getMembers().remove(participant);
+
+        });
+        this.groupRepository.saveAll(groups);
     }
 
 }

@@ -1,6 +1,8 @@
 package tech.antoniosgarbi.desafiomvc.service;
 
 import org.springframework.stereotype.Service;
+
+import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.AttendanceList;
 import tech.antoniosgarbi.desafiomvc.model.Event;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
@@ -18,23 +20,20 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@AllArgsConstructor
 public class AttendanceListService {
-    private final AttendanceRepository AttendanceRepository;
-
-    public AttendanceListService(AttendanceRepository attendanceRepository) {
-        AttendanceRepository = attendanceRepository;
-    }
+    private final AttendanceRepository attendanceRepository;
 
     public AttendanceList save(AttendanceList attendanceList) {
-        return this.AttendanceRepository.save(attendanceList);
+        return this.attendanceRepository.save(attendanceList);
     }
 
     public AttendanceList createNewList(Date date) {
-        return this.AttendanceRepository.save(new AttendanceList(null, date, new ArrayList<>(), new ArrayList<>()));
+        return this.attendanceRepository.save(new AttendanceList(null, date, new ArrayList<>(), new ArrayList<>()));
     }
 
     public AttendanceList findById(Long id) {
-        return this.AttendanceRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
+        return this.attendanceRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
     }
 
     private List<Date> getDatesOnRange(Event event) {
@@ -128,6 +127,24 @@ public class AttendanceListService {
         int day = cal.get(Calendar.DAY_OF_WEEK);
 
         return day == Calendar.SATURDAY || day == Calendar.SUNDAY;
+    }
+
+    public void deleteAll(List<AttendanceList> attendanceLists) {
+        attendanceLists.forEach(a -> {
+            a.setParticipantsWerePresent(null);
+            a.setParticipantsArrivedLate(null);
+        });
+        this.attendanceRepository.saveAll(attendanceLists);
+        this.attendanceRepository.deleteAll(attendanceLists);
+    }
+
+    public void removeReferencesFromParticipant(Participant participant) {
+        List<AttendanceList> attendanceLists = this.attendanceRepository.findAllByParticipantsWerePresentContains(participant);
+        attendanceLists.forEach(a -> {
+            a.getParticipantsWerePresent().remove(participant);
+            a.getParticipantsArrivedLate().remove(participant);
+        });
+        this.attendanceRepository.saveAll(attendanceLists);
     }
 
     

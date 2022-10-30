@@ -3,6 +3,8 @@ package tech.antoniosgarbi.desafiomvc.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.repository.ParticipantRepository;
 
@@ -10,12 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ParticipantService {
     private final ParticipantRepository participantRepository;
+    private final GroupService groupService;
+    private final ActivityService activityService;
+    private final AttendanceListService attendanceListService;
 
-    public ParticipantService(ParticipantRepository participantRepository) {
-        this.participantRepository = participantRepository;
-    }
 
     public Participant findById(Long id) {
         return this.participantRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
@@ -31,6 +34,10 @@ public class ParticipantService {
     }
 
     public void delete(Long id) {
+        Participant participant = this.findById(id);
+        this.groupService.removeReferencesFromParticipant(participant);
+        this.activityService.removeReferencesFromParticipant(participant);
+        this.attendanceListService.removeReferencesFromParticipant(participant);
         this.participantRepository.deleteById(id);
     }
 

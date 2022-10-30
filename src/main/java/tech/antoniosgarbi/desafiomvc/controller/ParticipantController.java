@@ -8,6 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.service.ParticipantService;
 
@@ -15,12 +17,9 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/participant")
+@AllArgsConstructor
 public class ParticipantController {
     private final ParticipantService participantService;
-
-    public ParticipantController(ParticipantService participantService) {
-        this.participantService = participantService;
-    }
 
     @GetMapping("/edit")
     public ModelAndView edit(@RequestParam(required = false) Long id) {
@@ -80,8 +79,8 @@ public class ParticipantController {
 
     }
 
-    @GetMapping("/excluir")
-    public ModelAndView delete(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         ModelAndView mv = new ModelAndView("redirect:/participant");
 
         try {
