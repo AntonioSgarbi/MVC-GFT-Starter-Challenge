@@ -161,9 +161,9 @@ public class EventService {
                     for (Activity activity : event.getActivities()) {
 
                         if (activity.getDelayed().contains(participant)) {
-                            score += 8;
+                            score += 3;
                         } else if (activity.getDelivered().contains(participant)) {
-                            score += 10;
+                            score += 5;
                         } else {
                             fullActivity = false;
                         }
