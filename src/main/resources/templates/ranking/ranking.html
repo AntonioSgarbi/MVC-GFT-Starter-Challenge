@@ -10,12 +10,13 @@
 
 <div layout:fragment="content">
 
+
     <div class="d-flex justify-content-center">
         <div class="w-75">
             <h1 class="text-center text-white mb-5" th:text="'Evento: ' + ${event.getName()}"></h1>
             <h2 class="text-center text-white mb-5">Classificação</h2>
-            <div th:each="group, iter : ${event.getGroups}" class="card mb-2 p-3 d-flex flex-row justify-content-around text-white"
-                style="text-decoration: none;">
+            <div th:each="group, iter : ${event.getGroups}"
+                class="card mb-2 p-3 d-flex flex-row justify-content-around text-white" style="text-decoration: none;">
                 <div class="d-flex flex-column" style="align-content: space-around;">
                     <h2 th:text="'Groupo: ' + ${group.name}"></h2>
                     <h3 th:text="'Pontuação: ' + ${group.score}"></h3>
@@ -30,6 +31,41 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="text-white text-center d-flex justify-content-center">
+        <table class="table text-white w-50">
+            <thead>
+                <tr>
+                    <th colspan="2">GFT MILHAS</th>
+                </tr>
+                <tr>
+                    <th>Critério</th>
+                    <th>Pontuação por Grupo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Presença</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>Atividade</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Atraso</td>
+                    <td>-2</td>
+                </tr>
+                <tr>
+                    <td>Bônus 100% presença</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Bônus 100% atividade</td>
+                    <td>3</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
