@@ -1,5 +1,6 @@
 package tech.antoniosgarbi.desafiomvc.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -92,10 +93,10 @@ public class EventController {
     }
 
     @GetMapping
-    public ModelAndView findAll() {
+    public ModelAndView findAll(Pageable pageable) {
         ModelAndView mv = new ModelAndView("event/list.html");
 
-        mv.addObject("list", eventService.findAll());
+        mv.addObject("page", eventService.findAll(pageable));
 
         return mv;
     }

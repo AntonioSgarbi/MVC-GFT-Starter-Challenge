@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout.html}">
 <meta charset="UTF-8">
+
 <head>
     <title>Colaboradores</title>
 </head>
@@ -13,28 +13,59 @@
     <div class="d-flex justify-content-center">
         <table class="table table-striped w-75">
             <thead>
-            <tr>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Opções</th>
-            </tr>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Opções</th>
+                </tr>
             </thead>
+
             <tbody>
-            <tr th:if="${#lists.isEmpty(list)}">
-                <td colspan="3">Sem conteúdo</td>
-            </tr>
+                <tr th:each="participant : ${page.content}">
+                    <td th:text="${participant.name}" width="40%"></td>
+                    <td th:text="${participant.email}" width="40%"></td>
+                    <td><a class="btn btn-outline-primary btn-sm"
+                            th:href="@{/participant/edit?id=} + ${participant.id}">Editar</a>
+                        <a class="btn btn-outline-danger btn-sm" th:href="@{/participant/delete/} + ${participant.id}"
+                            onclick="return confirm('Você realmente deseja excluir esse participante?')">Excluir</a>
+                    </td>
+                </tr>
             </tbody>
-            <tbody th:unless="${#lists.isEmpty(list)}">
-            <tr th:each="participant : ${list}">
-                <td th:text="${participant.name}" width="40%"></td>
-                <td th:text="${participant.email}" width="40%"></td>
-                <td><a class="btn btn-outline-primary btn-sm" th:href="@{/participant/edit?id=} + ${participant.id}">Editar</a>
-                    <a class="btn btn-outline-danger btn-sm" th:href="@{/participant/delete/} + ${participant.id}"
-                       onclick="return confirm('Você realmente deseja excluir esse participante?')">Excluir</a>
-                </td>
-            </tr>
-            </tbody>
+
         </table>
+    </div>
+    <div class="d-flex justify-content-center">
+        <nav>
+            <ul class="pagination">
+
+                <li th:if="!${page.first}">
+                    <span class="page-link">
+                        <a th:href="@{/participant?page=} + ${page.number - 1}"
+                            style="text-decoration: none;">&laquo;</a>
+                    </span>
+                </li>
+
+                <li th:if="!${page.first}" class="page-item">
+                    <a th:href="@{/participant?page=} + ${page.number - 1}" th:text="${page.number}"
+                        class="page-link"></a>
+                </li>
+
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link" th:text="${page.number + 1}"></span>
+                </li>
+
+
+                <li th:if="!${page.last}" class="page-item">
+                    <a th:href="@{/participant?page=} + ${page.number + 1}" th:text="${page.number + 2}"
+                        class="page-link"></a>
+                </li>
+
+                <li th:if="!${page.last}" class="page-item">
+                    <a th:href="@{/participant?page=} + ${page.number + 1}" class="page-link"
+                        style="text-decoration: none;">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 

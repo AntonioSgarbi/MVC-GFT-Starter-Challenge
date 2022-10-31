@@ -2,6 +2,9 @@ package tech.antoniosgarbi.desafiomvc.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -68,8 +71,8 @@ public class EventService {
         return event;
     }
 
-    public List<Event> findAll() {
-        return this.eventRepository.findAll();
+    public Page<Event> findAll(Pageable pageable) {
+        return this.eventRepository.findAll(pageable);
     }
 
     public List<Participant> findAllParticipantsFromEvent(Long eventId) {

@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import tech.antoniosgarbi.desafiomvc.model.Participant;
 import tech.antoniosgarbi.desafiomvc.repository.ParticipantRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,7 +18,6 @@ public class ParticipantService {
     private final ActivityService activityService;
     private final AttendanceListService attendanceListService;
 
-
     public Participant findById(Long id) {
         return this.participantRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
     }
@@ -29,8 +27,8 @@ public class ParticipantService {
         return this.participantRepository.save(participant);
     }
 
-    public List<Participant> findAll() {
-        return this.participantRepository.findAll();
+    public Page<Participant> findAll(Pageable pageable) {
+        return this.participantRepository.findAll(pageable);
     }
 
     public void delete(Long id) {
@@ -47,7 +45,7 @@ public class ParticipantService {
 
     private void checkDuplicate(Participant participant) {
         Optional<Participant> optional = this.participantRepository.findByLetters(participant.getLetters());
-        if(participant.getId() == null && optional.isPresent()) {
+        if (participant.getId() == null && optional.isPresent()) {
             throw new RuntimeException("Participant is alread registered!");
         }
     }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Ooopss...</title>
+    <title>E o vencedor é...</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
     <style>
@@ -246,7 +246,7 @@
         </svg>
     </div>
     <div class="text">
-        <h1 th:text="'Parabéns ao Grupo vencedor ' + ${event.getGroups.get(0).getName()}"></h1>
+        <h1 th:text="'Parabéns ao Grupo vencedor: ' + ${event.getGroups.get(0).getName()}"></h1>
         <h2>Vocês voaram juntos e ganharam o céu!</h2>
         <h3>Ver todos os grupos? <a th:href="@{/ranking/event?eventId=} + ${event.getId()} + '&fromWinner=true'">Clique aqui</a></h3>
     </div>

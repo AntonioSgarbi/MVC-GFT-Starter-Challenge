@@ -19,15 +19,6 @@ public class ErrorController {
         return new ModelAndView("/auth/login.html");
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public String notFound(final Throwable throwable, final Model model) {
-        logger.error("Exception during execution of SpringSecurity application", throwable);
-        String errorMessage = (throwable != null ? throwable.getMessage() : "Unknown error");
-        model.addAttribute("errorMessage", errorMessage);
-        return "not-found";
-    }
-
-
     @ExceptionHandler(Throwable.class)
     public String exceptionGenaeric(final Throwable throwable, final Model model) {
         logger.error("Exception during execution of SpringSecurity application", throwable);

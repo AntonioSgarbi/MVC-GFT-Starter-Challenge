@@ -70,10 +70,10 @@ public class ParticipantController {
     }
 
     @GetMapping
-    public ModelAndView findAll() {
+    public ModelAndView findAll(Pageable pageable) {
         ModelAndView mv = new ModelAndView("participant/list.html");
 
-        mv.addObject("list", participantService.findAll());
+        mv.addObject("page", participantService.findAll(pageable));
 
         return mv;
 
